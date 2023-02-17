@@ -18,7 +18,20 @@
 
 </head>
 <body>
-    {% block content %}{% endblock %}
+
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+            <img src="{% static 'image/base/logo.svg' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-center">
+            Bootstrap
+            </a>
+        </div>
+    </nav>
+
+
+    {% block content %}
+    
+    {% endblock %}
     <script src="{% static 'js/base/bootstrap.min.js' %}"></script>
 
 </body>

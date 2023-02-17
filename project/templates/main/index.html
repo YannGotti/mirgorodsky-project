@@ -3,6 +3,47 @@
 
 {% block content %}
 
+<div class="container">
+    <div class="row d-flex justify-content-start">
+        <div class="col-4">
+            <form action="{% url 'createTask' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Название задачи</label>
+                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Покакать">
+                </div>
+            
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Описание задачи</label>
+                    <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-outline-danger">Success</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-start mt-5">
+        {% for task in tasks %}
+            <div class="col-2 mt-3 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                    {{ task.title }}
+                    </div>
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ task.description }}</p>
+                        <footer class="blockquote-footer">Good</footer>
+                    </blockquote>
+                    </div>
+                </div>  
+            </div>
+        {% endfor %}
+        
+    </div>
+
+</div>
+
 
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
