@@ -24,7 +24,7 @@ class CreateTask(View):
         form = CreateTaskForm(request.POST)
 
         if not form.is_valid():
-            return HttpResponse('пиздп мать')
+            return redirect('/')
         
         form.save()
         
