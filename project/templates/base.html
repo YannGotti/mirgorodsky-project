@@ -14,24 +14,39 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
-    <!--link rel="stylesheet" href="{% static 'css/main.css' %}"-->
+    <link rel="stylesheet" href="{% static 'css/base/main.css' %}">
 
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="font-size: 14px; font-weight: 600;">
-            <img src="{% static 'image/base/logo.svg' %}" alt="Logo" width="24" height="20" class="d-inline-block align-text-top">
+    <nav class="navbar navbar-expand-lg m-1 text-dark">
+        <div class="container-fluid" style="font-family: 'Inter', sans-serif;">
+            <a class="navbar-brand text-navbar" href="#">
+            <img src="{% static 'image/base/logo.svg' %}" alt="Logo" width="28" height="20" class="d-inline-block align-text-top">
             ZNOTES
             </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!--div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mx-4">
+                    <button type="button" class="btn btn-outline-light text-dark text-navbar-elements">Документация</button>
+                </div>
+            </div-->
+
+            <button type="button" class="btn btn-outline-light text-dark text-navbar">API</button>
         </div>
     </nav>
 
+    {% if user.is_authenticated %}
+        {% block content %}{% endblock %}
+    {% else %}
 
-    {% block content %}
+    {% endif %}
+
     
-    {% endblock %}
     <script src="{% static 'js/base/bootstrap.min.js' %}"></script>
 
 </body>

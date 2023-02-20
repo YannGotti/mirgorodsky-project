@@ -4,18 +4,14 @@ class Task(models.Model):
     title = models.CharField('Задача', max_length=50)
     description = models.CharField('Описание', max_length=50)
     is_ready = models.BooleanField('Выполнено?', default=False)
-
-    EASY = 1
-    MIDDLE = 2
-    HARD = 3
     
     flags = [
-        (EASY, 'Легко'),
-        (MIDDLE, 'Средне'),
-        (HARD, 'Сложно'),
+        (1, 'Легко'),
+        (2, 'Средне'),
+        (3, 'Сложно'),
     ]
 
-    flag = models.IntegerField('Флаг', default=EASY, choices=flags)
+    flag = models.IntegerField('Флаг', default=1, choices=flags)
 
     def __str__(self):
         return f'{self.title}, {self.description}, {self.flag}, {self.is_ready}'
