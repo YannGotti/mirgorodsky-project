@@ -4,47 +4,96 @@
 {% block content %}
 
 <div class="container">
-    <div class="row d-flex justify-content-start">
-        <div class="col-4">
-            <form action="{% url 'createTask' %}" method="post">
+
+    <div class="row d-flex justify-content-between mt-4">
+        <div class="col-6">
+            <h5 class="text">Добавление задачи</h5>
+        </div>
+    </div>
+
+
+    <div class="row d-flex justify-content-start mt-2">
+        <div class="col-12">
+            <form class="" action="{% url 'createTask' %}" method="post">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Название задачи</label>
-                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Покакать">
-                </div>
-            
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Описание задачи</label>
-                    <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+                <div class="input-group mb-3 animate__animated animate__fadeInDown">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 disabled" type="checkbox" disabled>
+                    </div>
+
+                    <input type="text" name="title" class="form-control text-dark text-button-form" placeholder="Добавить задачу..">
                 </div>
                 
-                <button type="submit" class="btn btn-outline-danger">Success</button>
             </form>
         </div>
     </div>
 
-    <div class="row d-flex justify-content-start mt-5">
-        {% for task in tasks %}
-            <div class="col-2 mt-3 mb-3">
-                <div class="card">
-                    <div class="card-header">
-                    {{ task.title }}
-                    </div>
-                    <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>{{ task.description }}</p>
-                        <footer class="blockquote-footer">Good</footer>
-                    </blockquote>
-                    </div>
-                </div>  
-            </div>
-        {% endfor %}
-        
-    </div>
-
 </div>
 
+<section class="easy_tasks">
+    <div class="container">
 
+        <div class="col-2 mt-4 mb-4">
+            <h5 class="text">Легкие</h5>
+        </div>
+
+        <div class="row d-flex justify-content-center mt-2">
+    
+            {% for task in tasks %}
+                <div class="col-11 p-3 m-3 task-background animate__animated animate__fadeInDown" onclick="openPanelTask('{{task.id}}')"
+                 type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_{{task.id}}" aria-controls="offcanvasScrolling_{{task.id}}">
+
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label text-task mx-4" for="flexCheckDefault">
+                                  {{ task.title }}
+                                </label>
+                              </div>
+                        </div>
+
+                        <div class="col-1">
+                            {% if task.favorite %}
+                                <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/active_star.png' %}" alt="">
+                            {% else %}
+                               <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/disabled_star.png' %}" alt=""> 
+                            {% endif %}
+                        </div>
+
+                        
+
+                    </div>          
+
+                </div>
+
+
+                <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_{{task.id}}" aria-labelledby="offcanvasScrollingLabel">
+                    <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">{{ task.title }} : {{ task.id }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                      <p>{{ task.title }}</p>
+                    </div>
+                  </div>
+            {% endfor %}
+
+            
+        </div>
+
+
+        {% if easy_tasks.count == 0 %}
+            <div class="row d-flex justify-content-start">
+                <div class="col-2 mt-2">
+                    <h5 class="text-null-tasks">Отсутствуют</h5>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{% static 'js/main/main.js' %}"></script>
 {% endblock %}

@@ -4,6 +4,7 @@ class Task(models.Model):
     title = models.CharField('Задача', max_length=50)
     description = models.CharField('Описание', max_length=50)
     is_ready = models.BooleanField('Выполнено?', default=False)
+    favorite = models.BooleanField('Избранное?', default=False)
     
     flags = [
         (1, 'Легко'),

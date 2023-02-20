@@ -10,6 +10,67 @@
     font-weight: 600;
 }
 
+.text-button-form{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text-task{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text-task-description{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.text-null-tasks{
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.5;
+}
+
+.text{
+    font-weight: 500;
+}
+
+.task-background{
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+.task-background:hover {
+    transition: 0.2s;
+    cursor: pointer;
+    background-color: #dbdbdb;
+}
+
+.input-description{
+    box-shadow: none !important;
+    border-color: #e9ecef !important;
+}
+
+.form-check-input{
+    box-shadow: none !important;
+    border-color: #ff7676 !important;
+}
+
 .btn-outline-light{
     --bs-btn-border-color: #ffffff;
+}
+
+.form-check-input:checked {
+    background-color: #ff7676;
+    border-color: #ff7676;
+}
+
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    border-color: #e9ecef;
+    box-shadow: none;
+}
+
+.input-group-text {
+    background-color: #e9ecef;
+    border: none;
 }
