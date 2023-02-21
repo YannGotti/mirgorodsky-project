@@ -41,9 +41,12 @@
 }
 
 .task-background:hover {
-    transition: 0.2s;
-    cursor: pointer;
+    transition: 0.5s;
     background-color: #dbdbdb;
+}
+
+.task-background:active{
+    transition: 0.5s;
 }
 
 .input-description{
