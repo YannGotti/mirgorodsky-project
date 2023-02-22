@@ -45,8 +45,33 @@ function addTask(){
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closePanelTask(` + task.id + `)"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <p>` + task.title + `</p>
-                    </div>
+                            
+
+                            <div class="content-panel">
+                                <p>` + task.title + `</p>
+                            </div>
+
+                            <div class="row d-flex justify-content-between footer-panel">
+                                <hr></hr>
+                                <div class="col-2 mt-1">
+                                    <button type="button" class="btn btn-outline-light text-dark text-navbar-elements" aria-label="Скрыть подробное представление">
+                                        <img data-bs-dismiss="offcanvas" aria-label="Close"  src="static/image/main/closePanel.png"
+                                        width="20px" height="20px"  onclick="closePanelTask(` + task.id + `)" style="cursor: pointer;">
+                                    </button>
+                                </div>
+
+                                <div class="col-8">
+                                    <h4 class="text-dop mt-3 text-center">Создано 23 февраля 2023 г.</h4>
+                                </div>
+
+                                <div class="col-2 mt-1">
+                                    <button type="button" class="btn btn-outline-light text-dark text-navbar-elements">
+                                        <img src="static/image/main/delTask.png" width="20px" height="20px" style="cursor: pointer;">
+                                    </button>
+                                </div>
+                                
+                            </div>
+                        </div>
                 </div>
             `
 
