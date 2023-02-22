@@ -3,6 +3,8 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'css/main/panel.css' %}">
+
 <div class="container">
 
     <div class="row d-flex justify-content-center  mt-5 mb-2">
@@ -44,85 +46,136 @@
 
 <section>
     <div class="container">
-        <div class="row d-flex  justify-content-between  mt-2 mb-2">
+        <div id="show_tasks">
+            <div class="row d-flex  justify-content-between  mt-2 mb-2">
 
-            <div class="col-2 col-lg-2">
-                <h5 class="text">Все задачи</h5>
-            </div>
-
-            <div class="col-4 col-lg-2 mx-0" id="button-dropdown">
-                <div class="dropdown">
-                    <button class="btn btn-outline-light dropdown-toggle text text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Фильтры
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-light">
-
-                        <li><a class="dropdown-item text" href="#">Все</a></li>
-                        <li><a class="dropdown-item text" href="#">Избранные</a></li>
-                        <li><hr class="dropdown-divider"></li>
-
-                        <li><a class="dropdown-item  text" href="#">Легкие</a></li>
-                        <li><a class="dropdown-item  text" href="#">Средние</a></li>
-                        <li><a class="dropdown-item  text" href="#">Сложные</a></li>
-                        
-                    </ul>
-                    </div>
-            </div>
-        </div>
-        
-
-        <div class="row d-flex justify-content-start mt-2" id="tasks-list">
+                <div class="col-2 col-lg-2">
+                    <h5 class="text">Все задачи</h5>
+                </div>
     
-            {% for task in tasks %}
-                <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_{{ task.id }}" onclick="openPanelTask('{{ task.id }}')">
-
-                    <div class="row d-flex justify-content-between">
-                        <div class="col-8 col-lg-11">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="deleteTask('{{ task.id }}')">
-                                <label class="form-check-label text-task mx-4" for="flexCheckDefault">
-                                    <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_{{task.id}}" aria-controls="offcanvasScrolling_{{task.id}}">{{ task.title }}</a>
-                                </label>
-                              </div>
+                <div class="col-4 col-lg-2 mx-0" id="button-dropdown">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle text text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Фильтры
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-light">
+    
+                            <li><a class="dropdown-item text" href="#">Все</a></li>
+                            <li><a class="dropdown-item text" href="#">Избранные</a></li>
+                            <li><hr class="dropdown-divider"></li>
+    
+                            <li><a class="dropdown-item  text" href="#">Легкие</a></li>
+                            <li><a class="dropdown-item  text" href="#">Средние</a></li>
+                            <li><a class="dropdown-item  text" href="#">Сложные</a></li>
+                            
+                        </ul>
                         </div>
-
-                        <div class="col-1 col-lg-1">
-                            {% if task.favorite %}
-                                <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/active_star.png' %}" alt="">
-                            {% else %}
-                               <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/disabled_star.png' %}" alt=""> 
-                            {% endif %}
-                        </div>
-
-                    </div>          
-
-                </div>
-
-
-                <div class="offcanvas offcanvas-end p-4" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_{{task.id}}" aria-labelledby="offcanvasScrollingLabel">
-                    <div class="offcanvas-header">
-                      <h5 class="offcanvas-title text-end" id="offcanvasScrollingLabel">{{ task.title }} : {{ task.id }}</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closePanelTask('{{ task.id }}')"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                      <p>{{ task.title }}</p>
-                    </div>
-                  </div>
-            {% endfor %}
-
-            
-        </div>
-
-
-        {% if easy_tasks.count == 0 %}
-            <div class="row d-flex justify-content-start">
-                <div class="col-2 mt-2">
-                    <h5 class="text-null-tasks">Отсутствуют</h5>
                 </div>
             </div>
-        {% endif %}
+            
+    
+            <div class="row d-flex justify-content-start mt-2" id="tasks-list">
+                
+                {% for task in tasks %}
+                {% if not task.is_ready %}
+                  
+                    <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_{{ task.id }}" onclick="openPanelTask('{{ task.id }}')">
+    
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-8 col-lg-11">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="readyTask('{{ task.id }}')">
+                                    <label class="form-check-label text-task mx-4" for="flexCheckDefault">
+                                        <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_{{task.id}}" aria-controls="offcanvasScrolling_{{task.id}}">{{ task.title }}</a>
+                                    </label>
+                                  </div>
+                            </div>
+    
+                            <div class="col-1 col-lg-1">
+                                {% if task.favorite %}
+                                    <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/active_star.png' %}" alt="">
+                                {% else %}
+                                   <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/disabled_star.png' %}" alt=""> 
+                                {% endif %}
+                            </div>
+    
+                        </div>          
+    
+                    </div>
+    
+    
+                    <div class="offcanvas offcanvas-end p-4" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_{{task.id}}" aria-labelledby="offcanvasScrollingLabel">
+                        <div class="offcanvas-header">
+                          <h5 class="offcanvas-title text-end" id="offcanvasScrollingLabel">{{ task.title }} : {{ task.id }}</h5>
+                        </div>
+                        <div class="offcanvas-body">
+                            
+
+                            <div class="content-panel">
+                                <p>{{ task.title }}</p>
+                            </div>
+
+                            <div class="row d-flex justify-content-between footer-panel">
+                                <hr></hr>
+                                <div class="col-2 mt-1">
+                                    <button type="button" class="btn btn-outline-light text-dark text-navbar-elements" aria-label="Скрыть подробное представление">
+                                        <img data-bs-dismiss="offcanvas" aria-label="Close"  src="{% static 'image/main/closePanel.png' %}"
+                                        width="20px" height="20px"  onclick="closePanelTask('{{ task.id }}')" style="cursor: pointer;">
+                                    </button>
+                                </div>
+
+                                <div class="col-8">
+                                    <h4 class="text-dop mt-3 text-center">Создано {{ task.date_create }}</h4>
+                                </div>
+
+                                <div class="col-2 mt-1">
+                                    <button type="button" class="btn btn-outline-light text-dark text-navbar-elements">
+                                        <img src="{% static 'image/main/delTask.png' %}" width="20px" height="20px" style="cursor: pointer;">
+                                    </button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                      </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center animate__animated animate__fadeIn" id="hide_tasks">
+            <div class="col-12">
+                <h5 class="text-dop text-center">Время добавить задачу</h5>
+            </div>
+        </div>
 
     </div>
+
+
+
+
+
+
+</section>
+
+<script>
+    function checkCountTasks(task_count){
+        let hide_tasks = document.getElementById('hide_tasks');
+        let show_tasks = document.getElementById('show_tasks');
+
+        if (task_count == 0){
+            hide_tasks.style.setProperty("display", "block", "important");
+            show_tasks.style.setProperty("display", "none", "important");
+        }
+        else{
+            show_tasks.style.setProperty("display", "block", "important");
+            hide_tasks.style.setProperty("display", "none", "important");
+        }
+    }
+
+    checkCountTasks(parseInt('{{ count_tasks }}'));
+    
+</script>
+
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="{% static 'js/instruments/litepicker.js' %}"></script>

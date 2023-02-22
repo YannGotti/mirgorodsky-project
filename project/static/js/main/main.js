@@ -23,7 +23,7 @@ function addTask(){
                     <div class="row d-flex justify-content-between">
                         <div class="col-8 col-lg-11">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  onclick="readyTask(` + task.id + `)">
                                 <label class="form-check-label text-task mx-4" for="flexCheckDefault">
                                     <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.id + `" aria-controls="offcanvasScrolling_` + task.id + `">` + task.title + `</a>
                                 </label>
@@ -61,6 +61,8 @@ function addTask(){
 
             form.elements.title.value = '';
 
+            checkCountTasks(task.count);
+
         },
         error: function (jqXHR, exception) {
             return;
@@ -69,28 +71,18 @@ function addTask(){
 }
 
 
-function deleteTask(task){
-    let select_task = document.getElementById('task_' + task);
-
-    select_task.classList.remove('animate__fadeInDown');
-    select_task.classList.add('animate__fadeOut');
-
-    setTimeout(function(){ select_task.remove() }, 500);
-
+function readyTask(task){
     $.ajax({
-        url: '/ajax/setfavorite?favorite=' + favotite+ '&task=' + task,
+        url: '/ajax/ready_task?id=' + task,
         method: 'get',
         success: function(data){
-            let task_favorite = document.getElementById('task_favorite_' + task);
+            let select_task = document.getElementById('task_' + task);
 
+            select_task.classList.remove('animate__fadeInDown');
+            select_task.classList.add('animate__fadeOut');
 
-            if (Boolean(parseInt(data))){
-                task_favorite.setAttribute('src', '/static/image/main/active_star.png');
-            }
-
-            else{
-                task_favorite.setAttribute('src', '/static/image/main/disabled_star.png');
-            }
+            setTimeout(function(){ select_task.remove() }, 500);
+            setTimeout(function(){ checkCountTasks(data.count) }, 1000);
         },
         error: function (jqXHR, exception) {
             return;

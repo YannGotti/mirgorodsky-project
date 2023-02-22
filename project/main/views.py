@@ -10,10 +10,12 @@ from .models import Task
 class MainPage(View):
     def get(self, request):
         tasks = Task.objects.all()
+        tasks = Task.objects.filter(is_ready = False)
 
         context = {
             'title' : 'Главная страница',
             'tasks' : tasks,
+            'count_tasks' : tasks.count(),
         }
 
         return render(request, 'main/index.html', context = context)
@@ -31,18 +33,34 @@ class CreateTask(View):
 
         task.save()
 
+        tasks = Task.objects.filter(is_ready = False)
+
         responseData = {
             'id': task.id,
             'title': task.title,
-            'favorite' : task.favorite
+            'favorite' : task.favorite,
+            'count' : tasks.count(),
         }
         
         return JsonResponse(responseData)
     
 
-class DeleteTask(View):
+class ReadyTask(View):
     def get(self, request):
         data = request.GET
+
+        task = Task.objects.get(id = int(data.get('id')))
+        task.is_ready = True
+        task.save()
+
+        tasks = Task.objects.filter(is_ready = False)
+
+        responseData = {
+            'count' : tasks.count(),
+        }
+
+        return JsonResponse(responseData)
+
 
 class SetFavoriteTask(View):
     def get(self, request):
