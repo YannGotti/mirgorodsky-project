@@ -5,6 +5,8 @@ class Task(models.Model):
     description = models.CharField('Описание', max_length=50)
     is_ready = models.BooleanField('Выполнено?', default=False)
     favorite = models.BooleanField('Избранное?', default=False)
+    date_create = models.DateField('Дата создания', auto_now=True)
+    date_finish = models.DateField('Дата завершения', null=True)
     
     flags = [
         (1, 'Легко'),

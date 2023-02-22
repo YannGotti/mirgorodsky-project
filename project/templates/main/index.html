@@ -5,19 +5,28 @@
 
 <div class="container">
 
-    <div class="row d-flex justify-content-between mt-4">
-        <div class="col-6">
-            <h5 class="text">Добавление задачи</h5>
+    <div class="row d-flex justify-content-center  mt-5 mb-2">
+        <div class="col-8">
+
+            <div class="row d-flex justify-content-between">
+                
+                <div class="col-6 col-lg-2 col-md-6 text-start mt-1">
+                    <h5 class="text-navbar-elements">Создание задачи</h5>
+                </div>
+
+                <div class="col-6 col-lg-3 col-md-6">
+                    <input class="form-control form-control-sm text-dark text-button-form  text-center datepick" type="text" id="datePicker" placeholder="Дата завершения">
+                </div>
+
+            </div>
+
         </div>
     </div>
 
-
-    <div class="row d-flex justify-content-start mt-2">
-        <div class="col-12">
-            <form class="" action="{% url 'createTask' %}" method="post">
-                {% csrf_token %}
-
-                <div class="input-group mb-3 animate__animated animate__fadeInDown">
+    <div class="row d-flex justify-content-center mb-5">
+        <div class="col-8">
+            <form name="task_form" onsubmit="addTask(); return false;">
+                <div class="input-group">
                     <div class="input-group-text">
                         <input class="form-check-input mt-0 disabled" type="checkbox" disabled>
                     </div>
@@ -31,22 +40,46 @@
 
 </div>
 
-<section class="easy_tasks">
+
+
+<section>
     <div class="container">
+        <div class="row d-flex  justify-content-between  mt-2 mb-2">
 
-        <div class="col-2 mt-4 mb-4">
-            <h5 class="text">Легкие</h5>
+            <div class="col-2 col-lg-2">
+                <h5 class="text">Все задачи</h5>
+            </div>
+
+            <div class="col-4 col-lg-2 mx-0" id="button-dropdown">
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle text text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Фильтры
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-light">
+
+                        <li><a class="dropdown-item text" href="#">Все</a></li>
+                        <li><a class="dropdown-item text" href="#">Избранные</a></li>
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li><a class="dropdown-item  text" href="#">Легкие</a></li>
+                        <li><a class="dropdown-item  text" href="#">Средние</a></li>
+                        <li><a class="dropdown-item  text" href="#">Сложные</a></li>
+                        
+                    </ul>
+                    </div>
+            </div>
         </div>
+        
 
-        <div class="row d-flex justify-content-start mt-2">
+        <div class="row d-flex justify-content-start mt-2" id="tasks-list">
     
             {% for task in tasks %}
-                <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" onclick="openPanelTask('{{ task.id }}')">
+                <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_{{ task.id }}" onclick="openPanelTask('{{ task.id }}')">
 
                     <div class="row d-flex justify-content-between">
                         <div class="col-8 col-lg-11">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="deleteTask('{{ task.id }}')">
                                 <label class="form-check-label text-task mx-4" for="flexCheckDefault">
                                     <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_{{task.id}}" aria-controls="offcanvasScrolling_{{task.id}}">{{ task.title }}</a>
                                 </label>
@@ -66,9 +99,9 @@
                 </div>
 
 
-                <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_{{task.id}}" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas offcanvas-end p-4" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_{{task.id}}" aria-labelledby="offcanvasScrollingLabel">
                     <div class="offcanvas-header">
-                      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">{{ task.title }} : {{ task.id }}</h5>
+                      <h5 class="offcanvas-title text-end" id="offcanvasScrollingLabel">{{ task.title }} : {{ task.id }}</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" onclick="closePanelTask('{{ task.id }}')"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -92,5 +125,9 @@
     </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{% static 'js/instruments/litepicker.js' %}"></script>
+<script src="{% static 'js/instruments/mobilefriendly.js' %}"></script>
 <script src="{% static 'js/main/main.js' %}"></script>
+<script src="{% static 'js/main/filter.js' %}"></script>
+<script src="{% static 'js/main/datepicker.js' %}"></script>
 {% endblock %}

@@ -19,16 +19,31 @@ class MainPage(View):
         return render(request, 'main/index.html', context = context)
     
 class CreateTask(View): 
-    def post(self, request):
-        form = CreateTaskForm(request.POST)
+    def get(self, request):
+        data = request.GET
 
-        if not form.is_valid():
-            return redirect('/')
+        date_finish = data.get('date_finish')
+
+        task = Task(title= data.get('title'))
+
+        if (date_finish):
+            task.date_finish = date_finish
+
+        task.save()
+
+        responseData = {
+            'id': task.id,
+            'title': task.title,
+            'favorite' : task.favorite
+        }
         
-        form.save()
-        
-        return redirect('/')
+        return JsonResponse(responseData)
     
+
+class DeleteTask(View):
+    def get(self, request):
+        data = request.GET
+
 class SetFavoriteTask(View):
     def get(self, request):
         data = request.GET

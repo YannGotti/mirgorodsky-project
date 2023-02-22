@@ -11,8 +11,14 @@
 }
 
 .text-button-form{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
+}
+
+.text-button-form::placeholder{
+    font-weight: 600;
+    font-size: 14px;
+    color: #212529;
 }
 
 .text-task{
@@ -34,6 +40,13 @@
 .text{
     font-weight: 500;
 }
+
+
+
+.datepick {
+    outline: none !important;
+    cursor: pointer;
+  }
 
 .task-background{
     background-color: #e9ecef;
@@ -57,6 +70,13 @@
 .form-check-input{
     box-shadow: none !important;
     border-color: #ff7676 !important;
+}
+
+
+
+
+.dropdown-menu-dark {
+    --bs-dropdown-link-active-bg: #484e55;
 }
 
 .btn-outline-light{
