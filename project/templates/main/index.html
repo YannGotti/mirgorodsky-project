@@ -102,27 +102,10 @@
         </div>
     </div>
 
-
-
-
 </section>
 
 <script>
-    function checkCountTasks(task_count){
-        let hide_tasks = document.getElementById('hide_tasks');
-        let show_tasks = document.getElementById('show_tasks');
-
-        if (task_count == 0){
-            hide_tasks.style.setProperty("display", "block", "important");
-            show_tasks.style.setProperty("display", "none", "important");
-        }
-        else{
-            show_tasks.style.setProperty("display", "block", "important");
-            hide_tasks.style.setProperty("display", "none", "important");
-        }
-    }
-
-    checkCountTasks(parseInt('{{ count_tasks }}'));
+    
     
 </script>
 

@@ -75,3 +75,14 @@ class RenameTask(View):
 
 
         return HttpResponse('Название изменено')
+    
+class AddDescriptionTask(View):
+    def get(self, request):
+        data = request.GET
+
+        task = Task.objects.get(id = int(data.get("id")))
+
+        task.description = data.get("description")
+        task.save()
+
+        return HttpResponse('Описание изменено')

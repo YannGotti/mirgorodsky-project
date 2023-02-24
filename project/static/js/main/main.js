@@ -7,7 +7,7 @@ function createTaskDiv(task){
 
     tasks_list.innerHTML += 
             `
-                <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_` + task.pk + `"  onclick="openPanelTask(` + task.pk + `)">
+                <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_` + task.pk + `" onclick="openPanelTask(` + task.pk + `)">
 
                     <div class="row d-flex justify-content-between">
                         <div class="col-8 col-lg-11">
@@ -16,6 +16,7 @@ function createTaskDiv(task){
                                 <label class="form-check-label text-task mx-4" for="flexCheckDefault">
                                     <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" id="task_title_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `">` + fields.title + `</a>
                                 </label>
+                                <label class="form-check-label mx-1 text-finish-task">Срок: ` + dateParse(date_finish) + `</label>
                               </div>
                         </div>
 
@@ -33,8 +34,17 @@ function createTaskDiv(task){
 
 
                             <div class="row d-flex justify-content-center">
-                                <div class="col-10">
-                                    <input type="text" class="form-control text-rename-panel text-center" id="renameInput_` + task.pk + `" onclick="addEventListener('focusout', AjaxRenameTask)" onkeyup="renamePanel(` + task.pk + `)" value="` + fields.title + `">
+                                <div class="col-12">
+                                    <input class="form-control text-rename-panel text-center" id="renameInput_` + task.pk + `" onclick="addEventListener('focusout', AjaxRenameTask)" onkeyup="renamePanel(` + task.pk + `)" value="` + fields.title + `">
+                                </div>
+                            </div>
+
+                            <div class="row d-flex justify-content-center mt-3">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="descriptionTask_` + task.pk + `" class="form-label text-panel">Добавить описание</label>
+                                        <textarea class="form-control text-panel-description" id="descriptionTask_` + task.pk + `" rows="2" onclick="addEventListener('focusout', addDescription)">` + fields.description + `</textarea>
+                                    </div>
                                 </div>
                             </div>
 
@@ -81,17 +91,28 @@ function createTaskDiv(task){
 
 }
 
+function checkCountTasks(task_count){
+    let hide_tasks = document.getElementById('hide_tasks');
+    let show_tasks = document.getElementById('show_tasks');
+
+    if (task_count == 0){
+        hide_tasks.style.setProperty("display", "block", "important");
+        show_tasks.style.setProperty("display", "none", "important");
+    }
+    else{
+        show_tasks.style.setProperty("display", "block", "important");
+        hide_tasks.style.setProperty("display", "none", "important");
+    }
+}
+
+checkCountTasks(parseInt('{{ count_tasks }}'));
 
 function InitMainPage(){
-    let tasks_list = document.getElementById('tasks-list');
-    tasks_list.innerHTML = ``;
-
     $.ajax({
         url: 'api/v.1/selectAllTasks/',
         method: 'get',
         success: function(data){
             
-            data.sort((a, b) => a.fields.favorite < b.fields.favorite ? 1 : -1);
             for (const task of data) {
                 createTaskDiv(task);
             }
@@ -175,8 +196,6 @@ function setFavorite(task, favotite){
             else{
                 task_favorite.setAttribute('src', '/static/image/main/disabled_star.png');
             }
-
-            InitMainPage();
         },
         error: function (jqXHR, exception) {
             return;
