@@ -4,6 +4,8 @@ from django.views.generic.base import View
 from django.core import serializers
 from main.models import Task
 
+import datetime
+
 class AjaxRequestDataTasks(View):
     def get(self, request):
         tasks = Task.objects.filter(is_ready = False)
@@ -21,6 +23,10 @@ class CreateTask(View):
 
         if (date_finish):
             task.date_finish = date_finish
+        else:
+            new_date = datetime.datetime.today()
+            new_date = datetime.datetime(new_date.year + 1, new_date.month, new_date.day)
+            task.date_finish = new_date
 
         task.save()
 

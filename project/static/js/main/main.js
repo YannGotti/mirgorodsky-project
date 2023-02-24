@@ -5,7 +5,6 @@ function createTaskDiv(task){
     let date_finish = new Date(fields.date_finish);
     let date_create = new Date(fields.date_create);
 
-
     tasks_list.innerHTML += 
             `
                 <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_` + task.pk + `"  onclick="openPanelTask(` + task.pk + `)">
@@ -29,7 +28,7 @@ function createTaskDiv(task){
                 </div>
 
 
-                <div class="offcanvas offcanvas-end  p-4" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_` + task.pk + `" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas offcanvas-end  all_offcanvas p-4" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_` + task.pk + `" aria-labelledby="offcanvasScrollingLabel">
                     <div class="offcanvas-body">
 
 
@@ -84,6 +83,9 @@ function createTaskDiv(task){
 
 
 function InitMainPage(){
+    let tasks_list = document.getElementById('tasks-list');
+    tasks_list.innerHTML = ``;
+
     $.ajax({
         url: 'api/v.1/selectAllTasks/',
         method: 'get',
@@ -118,11 +120,16 @@ function addTask(){
         success: function(request){
             let task = request[0];
             createTaskDiv(task);
-
             form.elements.title.value = '';
 
+            let all_offcanvas = document.getElementsByClassName('all_offcanvas');
 
             checkCountTasks();
+
+            for (let offcanvas of all_offcanvas) {
+                offcanvas.classList.replace('show', 'hide');
+            }
+            closePanelTask();
 
         },
         error: function (jqXHR, exception) {
@@ -161,7 +168,6 @@ function setFavorite(task, favotite){
         success: function(data){
             let task_favorite = document.getElementById('task_favorite_' + task);
 
-
             if (Boolean(parseInt(data))){
                 task_favorite.setAttribute('src', '/static/image/main/active_star.png');
             }
@@ -169,6 +175,8 @@ function setFavorite(task, favotite){
             else{
                 task_favorite.setAttribute('src', '/static/image/main/disabled_star.png');
             }
+
+            InitMainPage();
         },
         error: function (jqXHR, exception) {
             return;
@@ -187,19 +195,19 @@ function openPanelTask(task){
     dropdown.classList.add('mx-5')
 
     for (let point_task of point_tasks) {
-        if (task_panel.className == 'offcanvas offcanvas-end p-4 showing'){
+        if (task_panel.classList.contains('showing')){
             point_task.classList.remove('col-11', 'col-lg-11', 'col-md-7');
             point_task.classList.add('col-lg-10', 'col-11', 'col-md-7');
         }
         
 
         else{
-            closePanelTask(task);
+            closePanelTask();
         }
     }
 }
 
-function closePanelTask(task){
+function closePanelTask(){
     let point_tasks = document.getElementsByClassName('point-task');
     let dropdown = document.getElementById('button-dropdown');
 
