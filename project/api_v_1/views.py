@@ -57,3 +57,15 @@ class SetFavoriteTask(View):
 
 
         return HttpResponse(int(task.favorite))
+    
+class RenameTask(View):
+    def get(self, request):
+        data = request.GET
+
+        task = Task.objects.get(id = int(data.get("id")))
+
+        task.title = data.get("title")
+        task.save()
+
+
+        return HttpResponse('Название изменено')

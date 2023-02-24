@@ -7,4 +7,5 @@ urlpatterns = [
 
     path('api/v.1/ready_task/', views.ReadyTask.as_view()),
     path('api/v.1/setfavorite/', views.SetFavoriteTask.as_view()),
+    path('api/v.1/renameTask/', views.RenameTask.as_view()),
 ]

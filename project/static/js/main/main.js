@@ -15,7 +15,7 @@ function createTaskDiv(task){
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  onclick="readyTask(` + task.pk + `)">
                                 <label class="form-check-label text-task mx-4" for="flexCheckDefault">
-                                    <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `">` + fields.title + `</a>
+                                    <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" id="task_title_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `">` + fields.title + `</a>
                                 </label>
                               </div>
                         </div>
@@ -30,21 +30,22 @@ function createTaskDiv(task){
 
 
                 <div class="offcanvas offcanvas-end  p-4" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_` + task.pk + `" aria-labelledby="offcanvasScrollingLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">` + fields.title + `</h5>
-                    </div>
                     <div class="offcanvas-body">
 
 
-                            <div class="content-panel">
-                                <p>` + fields.title + `</p>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-10">
+                                    <input type="text" class="form-control text-rename-panel text-center" id="renameInput_` + task.pk + `" onclick="addEventListener('focusout', AjaxRenameTask)" onkeyup="renamePanel(` + task.pk + `)" value="` + fields.title + `">
+                                </div>
                             </div>
 
                             <div class="row d-flex justify-content-center">
                                 <div class="col-12">
-                                    <h4 class="text-dop mt-3 text-center">Завершение ` + dateParse(date_finish) + `</h4>
+                                    <h4 class="text-panel mt-3 text-center">Завершение ` + dateParse(date_finish) + `</h4>
                                 </div>
                             </div>
+
+
 
                             <div class="row d-flex justify-content-between footer-panel">
                                 <hr></hr>
@@ -56,7 +57,7 @@ function createTaskDiv(task){
                                 </div>
 
                                 <div class="col-8">
-                                    <h4 class="text-dop mt-3 text-center">Создано ` + dateParse(date_create) + `</h4>
+                                    <h4 class="text-panel mt-3 text-center">Создано ` + dateParse(date_create) + `</h4>
                                 </div>
 
                                 <div class="col-2 mt-1">
