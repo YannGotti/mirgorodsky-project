@@ -76,69 +76,7 @@
     
             <div class="row d-flex justify-content-start mt-2" id="tasks-list">
                 
-                {% for task in tasks %}
-                {% if not task.is_ready %}
-                  
-                    <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_{{ task.id }}" onclick="openPanelTask('{{ task.id }}')">
-    
-                        <div class="row d-flex justify-content-between">
-                            <div class="col-8 col-lg-11">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="readyTask('{{ task.id }}')">
-                                    <label class="form-check-label text-task mx-4" for="flexCheckDefault">
-                                        <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_{{task.id}}" aria-controls="offcanvasScrolling_{{task.id}}">{{ task.title }}</a>
-                                    </label>
-                                  </div>
-                            </div>
-    
-                            <div class="col-1 col-lg-1">
-                                {% if task.favorite %}
-                                    <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/active_star.png' %}" alt="">
-                                {% else %}
-                                   <img width="25px" id="task_favorite_{{ task.id }}" onclick="setFavorite('{{task.id}}')" src="{% static 'image/main/disabled_star.png' %}" alt=""> 
-                                {% endif %}
-                            </div>
-    
-                        </div>          
-    
-                    </div>
-    
-    
-                    <div class="offcanvas offcanvas-end p-4" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling_{{task.id}}" aria-labelledby="offcanvasScrollingLabel">
-                        <div class="offcanvas-header">
-                          <h5 class="offcanvas-title text-end" id="offcanvasScrollingLabel">{{ task.title }} : {{ task.id }}</h5>
-                        </div>
-                        <div class="offcanvas-body">
-                            
-
-                            <div class="content-panel">
-                                <p>{{ task.title }}</p>
-                            </div>
-
-                            <div class="row d-flex justify-content-between footer-panel">
-                                <hr></hr>
-                                <div class="col-2 mt-1">
-                                    <button type="button" class="btn btn-outline-light text-dark text-navbar-elements" aria-label="Скрыть подробное представление">
-                                        <img data-bs-dismiss="offcanvas" aria-label="Close"  src="{% static 'image/main/closePanel.png' %}"
-                                        width="20px" height="20px"  onclick="closePanelTask('{{ task.id }}')" style="cursor: pointer;">
-                                    </button>
-                                </div>
-
-                                <div class="col-8">
-                                    <h4 class="text-dop mt-3 text-center">Создано {{ task.date_create }}</h4>
-                                </div>
-
-                                <div class="col-2 mt-1">
-                                    <button type="button" class="btn btn-outline-light text-dark text-navbar-elements">
-                                        <img src="{% static 'image/main/delTask.png' %}" width="20px" height="20px" style="cursor: pointer;">
-                                    </button>
-                                </div>
-                                
-                            </div>
-                        </div>
-                      </div>
-                {% endif %}
-                {% endfor %}
+                
             </div>
         </div>
 
