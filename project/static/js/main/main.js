@@ -7,14 +7,14 @@ function createTaskDiv(task){
 
     tasks_list.innerHTML += 
             `
-                <div class="p-3 m-3 task-background animate__animated animate__fadeInDown point-task col-11 col-lg-11 col-md-7" id="task_` + task.pk + `" onclick="openPanelTask(` + task.pk + `)">
+                <div class="p-3 m-3 task-background  point-task  animate__animated animate__fadeInDown col-11 col-lg-11 col-md-7" id="task_` + task.pk + `">
 
                     <div class="row d-flex justify-content-between">
                         <div class="col-8 col-lg-11">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  onclick="readyTask(` + task.pk + `)">
                                 <label class="form-check-label text-task mx-4" for="flexCheckDefault">
-                                    <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" id="task_title_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `">` + fields.title + `</a>
+                                    <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" id="task_title_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `"  onclick="openPanelTask(` + task.pk + `)">` + fields.title + `</a>
                                 </label>
                                 <label class="form-check-label mx-1 text-finish-task">Срок: ` + dateParse(date_finish) + `</label>
                               </div>
@@ -50,13 +50,13 @@ function createTaskDiv(task){
 
                             <div class="row d-flex justify-content-center">
                                 <div class="col-12">
-                                    <h4 class="text-panel mt-3 text-center">Завершение ` + dateParse(date_finish) + `</h4>
+                                    <input class="form-control form-control-sm text-dark text-button-form  text-center datepick datepicks" id="datepick_` + task.pk + `" type="text" placeholder="Завершение ` + dateParse(date_finish) + `">
                                 </div>
                             </div>
 
 
 
-                            <div class="row d-flex justify-content-between footer-panel">
+                            <div class="row d-flex justify-content-between footer-panel mt-2">
                                 <hr></hr>
                                 <div class="col-2 mt-1">
                                     <button type="button" class="btn btn-outline-light text-dark text-navbar-elements" aria-label="Скрыть подробное представление">
@@ -227,6 +227,7 @@ function openPanelTask(task){
 }
 
 function closePanelTask(){
+
     let point_tasks = document.getElementsByClassName('point-task');
     let dropdown = document.getElementById('button-dropdown');
 

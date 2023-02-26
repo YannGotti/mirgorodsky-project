@@ -1,4 +1,28 @@
 
+function editDate(id_task, date){
+
+    $.ajax({
+        url: 'api/v.1/editDateTask?id=' + id_task + '&date=' + date,
+        method: 'get',
+        success: function(data){
+            const toastLiveExample = document.getElementById('liveToast');
+            let toast_content = document.getElementById('toast_content');
+            toast_content.innerText = 'Дата завершения изменена';
+            const toast = new bootstrap.Toast(toastLiveExample);
+            toast.show();
+
+            let date_finish = dateParse(new Date(data));
+            inputDate = document.getElementById('datepick_' + id_task);
+            inputDate.value = '';
+            inputDate.placeholder = 'Завершение ' + date_finish;
+        },
+        error: function (jqXHR, exception) {
+            return;
+        }
+    });
+      
+}
+
 function addDescription(e){
     let id_task = e.target.id.split('_')[1];
     let description = e.target.value;

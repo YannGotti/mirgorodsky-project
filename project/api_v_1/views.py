@@ -86,3 +86,14 @@ class AddDescriptionTask(View):
         task.save()
 
         return HttpResponse('Описание изменено')
+
+class EditDateTask(View):
+    def get(self, request):
+        data = request.GET
+
+        task = Task.objects.get(id = int(data.get("id")))
+
+        task.date_finish = data.get("date")
+        task.save()
+
+        return HttpResponse(task.date_finish)
