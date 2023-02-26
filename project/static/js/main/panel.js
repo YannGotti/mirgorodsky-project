@@ -12,9 +12,11 @@ function editDate(id_task, date){
             toast.show();
 
             let date_finish = dateParse(new Date(data));
-            inputDate = document.getElementById('datepick_' + id_task);
+            let inputDate = document.getElementById('datepick_' + id_task);
+            let label_finishDate = document.getElementById('finishDate_' + id_task);
             inputDate.value = '';
             inputDate.placeholder = 'Завершение ' + date_finish;
+            label_finishDate.textContent = 'Завершение ' + date_finish;
         },
         error: function (jqXHR, exception) {
             return;

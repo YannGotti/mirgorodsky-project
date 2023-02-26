@@ -16,7 +16,7 @@ function createTaskDiv(task){
                                 <label class="form-check-label text-task mx-4" for="flexCheckDefault">
                                     <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" id="task_title_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `"  onclick="openPanelTask(` + task.pk + `)">` + fields.title + `</a>
                                 </label>
-                                <label class="form-check-label mx-1 text-finish-task">Срок: ` + dateParse(date_finish) + `</label>
+                                <label class="form-check-label mx-1 text-finish-task" id="finishDate_` + task.pk + `">Завершение ` + dateParse(date_finish) + `</label>
                               </div>
                         </div>
 
@@ -141,6 +141,7 @@ function addTask(){
         success: function(request){
             let task = request[0];
             createTaskDiv(task);
+            createOnePickerPanel(task);
             form.elements.title.value = '';
 
             let all_offcanvas = document.getElementsByClassName('all_offcanvas');
@@ -210,8 +211,8 @@ function openPanelTask(task){
 
     let dropdown = document.getElementById('button-dropdown');
 
-    dropdown.classList.remove('mx-0')
-    dropdown.classList.add('mx-5')
+    dropdown.classList.remove('mx-0');
+    dropdown.classList.add('mx-5');
 
     for (let point_task of point_tasks) {
         if (task_panel.classList.contains('showing')){
@@ -231,8 +232,8 @@ function closePanelTask(){
     let point_tasks = document.getElementsByClassName('point-task');
     let dropdown = document.getElementById('button-dropdown');
 
-    dropdown.classList.remove('mx-5')
-    dropdown.classList.add('mx-0')
+    dropdown.classList.remove('mx-5');
+    dropdown.classList.add('mx-0');
 
 
     for (let point_task of point_tasks) {
@@ -257,5 +258,5 @@ MONTHS = [
 ]
 
 function dateParse(date) {
-    return date.getDate() + ' ' + MONTHS[date.getMonth()] + ' ' + date.getFullYear() + ' года'
+    return date.getDate() + ' ' + MONTHS[date.getMonth()] + ' ' + date.getFullYear() + ' года';
 }

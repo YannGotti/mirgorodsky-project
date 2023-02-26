@@ -6,7 +6,33 @@ const picker = new Litepicker({
     plugins: ['mobilefriendly']
   });
 
+function createOnePickerPanel(task){
+  datepick = document.getElementById('datepick_' + task.pk);
 
+  console.log(datepick);
+
+
+  new Litepicker({ 
+    element: datepick,
+    lang : 'ru',
+    minDate: new Date(),
+    plugins: ['mobilefriendly'],
+
+    setup: (picker) => {
+
+      picker.on('selected', (date1, date2) => {
+        let id_task = datepick.id.split('_')[1];
+
+        setTimeout(function(){
+            let date = datepick.value;
+
+            editDate(id_task, date);
+        }, 500);
+
+      });
+   },
+  });
+}
 
 function createPickerPanel(){
   let datepicks = document.getElementsByClassName('datepicks');
@@ -27,11 +53,8 @@ function createPickerPanel(){
 
               editDate(id_task, date);
           }, 500);
-
         });
-
      },
-
     });
   }
 }

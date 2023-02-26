@@ -36,15 +36,10 @@
                     <button type="button" class="btn btn-outline-light text-dark text-navbar-elements" id="navbarNavAltMarkup">API</button>
                 </div>
             </div>
-
         </div>
     </nav>
 
-    {% if user.is_authenticated %}
         {% block content %}{% endblock %}
-    {% else %}
-
-    {% endif %}
 
     
     <script src="{% static 'js/instruments/bootstrap.min.js' %}"></script>
