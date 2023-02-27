@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import HttpResponse
 from django.http import JsonResponse
 from django.views.generic.base import View
 from django.core import serializers
-from main.models import Task
+from main.models import Task, FilesTask
+from django.core.files.storage import FileSystemStorage
+import json
 
 import datetime
 
@@ -97,3 +99,24 @@ class EditDateTask(View):
         task.save()
 
         return HttpResponse(task.date_finish)
+    
+class AddFileTask(View):
+    def post(self, request):
+
+        if request.method == 'POST' and request.FILES['file']:
+
+            image = request.FILES['file']
+            fss = FileSystemStorage(location='media/files/')
+            file = fss.save(image.name, image)
+            id_task = request.POST.get('id_task')
+            task = Task.objects.get(id = id_task)
+            fileTaskModel = FilesTask(file = file, task = task)
+            fileTaskModel.save()
+
+            data = {
+                'filename' : image.name,
+                'path' : '/media/files/' + image.name,
+                'id_task' : id_task
+            }
+
+            return HttpResponse(json.dumps(data), content_type="application/json")

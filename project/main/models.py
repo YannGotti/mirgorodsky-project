@@ -7,7 +7,7 @@ class Task(models.Model):
     favorite = models.BooleanField('Избранное?', default=False)
     date_create = models.DateField('Дата создания', auto_now=True)
     date_finish = models.DateField('Дата завершения', null=True)
-    
+
     flags = [
         (1, 'Легко'),
         (2, 'Средне'),
@@ -22,5 +22,10 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Задачу'
         verbose_name_plural = 'Задачи'
+
+
+class FilesTask(models.Model):
+    file = models.FileField('Прикрепленный файл к задаче', upload_to='files/', blank=True, null=True)
+    task = models.ForeignKey(Task, verbose_name='Прикрепленная задача', on_delete=models.CASCADE)
 
 

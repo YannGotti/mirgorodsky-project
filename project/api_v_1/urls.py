@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/v.1/renameTask/', views.RenameTask.as_view()),
     path('api/v.1/addDescriptionTask/', views.AddDescriptionTask.as_view()),
     path('api/v.1/editDateTask/', views.EditDateTask.as_view()),
+    path('api/v.1/addFileTask/', views.AddFileTask.as_view()),
 ]

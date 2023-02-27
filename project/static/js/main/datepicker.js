@@ -9,8 +9,6 @@ const picker = new Litepicker({
 function createOnePickerPanel(task){
   datepick = document.getElementById('datepick_' + task.pk);
 
-  console.log(datepick);
-
 
   new Litepicker({ 
     element: datepick,
