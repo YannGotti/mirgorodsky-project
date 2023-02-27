@@ -141,3 +141,17 @@ class AddFileTask(View):
             }
 
             return HttpResponse(json.dumps(data), content_type="application/json")
+        
+
+class DeleteFileTask(View):
+    def get(self, request):
+        data = request.GET
+        file = FilesTask.objects.get(filename = data.get('filename'))
+        file.delete()
+        fss = FileSystemStorage(location='media/files/')
+        fss.delete(data.get('filename'))
+        
+        task = Task.objects.get(id = data.get('id'))
+        filescount = FilesTask.objects.filter(task = task)
+
+        return HttpResponse(filescount.count())

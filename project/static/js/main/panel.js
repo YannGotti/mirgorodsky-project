@@ -18,6 +18,28 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+function deleteFile(filename, id_task){
+    $.ajax({
+        url: 'api/v.1/deleteFileTask?id=' + id_task + '&filename=' + filename,
+        method: 'get',
+        success: function(data){
+
+            if (data < 1){
+                let filesDiv = document.getElementById('filesListDiv_' + id_task);
+                filesDiv.style.display = 'none';
+            }
+
+            let fileDiv = document.getElementById(filename + '_' + id_task);
+            fileDiv.remove();
+
+            CallToastPanel('Файл "'+ filename +'" успешно удален!');
+        },
+        error: function (jqXHR, exception) {
+            return;
+        }
+    });
+}
+
 function loadFilesList(id_task){
     let filesListTask = document.getElementById('filesListTask_' + id_task);
     filesListTask.innerHTML = ``;

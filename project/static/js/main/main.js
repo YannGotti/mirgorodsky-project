@@ -1,4 +1,5 @@
 function checkCountTasks(task_count){
+
     let hide_tasks = document.getElementById('hide_tasks');
     let show_tasks = document.getElementById('show_tasks');
 
@@ -12,13 +13,14 @@ function checkCountTasks(task_count){
     }
 }
 
-checkCountTasks(parseInt('{{ count_tasks }}'));
 
 function InitMainPage(){
     $.ajax({
         url: 'api/v.1/selectAllTasks/',
         method: 'get',
         success: function(data){
+
+            checkCountTasks(data.length);
             
             for (const task of data) {
                 createTaskDiv(task);
