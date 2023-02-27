@@ -26,8 +26,11 @@ function loadFilesList(id_task){
         method: 'get',
         success: function(data){
 
-            let filesDiv = document.getElementById('filesListDiv_' + id_task);
-            filesDiv.style.display = 'block';
+
+            if (data.length > 0){
+                let filesDiv = document.getElementById('filesListDiv_' + id_task);
+                filesDiv.style.display = 'block';
+            }
 
             for (const file of data) {
                 createFileTaskDiv(file);
@@ -63,7 +66,7 @@ function addFile(id_task){
             }
         },
         success: function(data){
-
+            inputFile.value = null;
             let filesDiv = document.getElementById('filesListDiv_' + data.id_task);
             filesDiv.style.display = 'block';
 

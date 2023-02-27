@@ -56,9 +56,9 @@ function createTaskDiv(task){
                                     </form>
                                 </div>
 
-                                <div class="row d-flex justify-content-start">
+                                <div class="row d-flex justify-content-center">
                                     <div class="col-12 btn-group mb-3" id="filesListDiv_` + task.pk + `"  style="display: none;">
-                                        <button class="btn btn-outline-white btn-sm dropdown-toggle text-panel" type="button" data-bs-toggle="dropdown" aria-expanded="false">Файлы</button>
+                                        <button class="btn btn-outline-white btn-sm dropdown-toggle text-panel" style="width: 100%;" type="button" data-bs-toggle="dropdown" aria-expanded="false">Прикрепленные файлы</button>
                                         <ul class="dropdown-menu text-panel" id="filesListTask_` + task.pk + `" style="width: 95%;">
                                             
                                         </ul>
