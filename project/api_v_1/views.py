@@ -13,6 +13,27 @@ class AjaxRequestDataTasks(View):
         tasks = Task.objects.filter(is_ready = False)
         data = serializers.serialize('json', tasks)
         return HttpResponse(data, content_type="application/json")
+    
+class AjaxRequestFilesTasks(View):
+    def get(self, request):
+        data = request.GET
+        id_task = data.get('id_task')
+
+        files = FilesTask.objects.filter(task=id_task)
+        data = [
+
+        ]
+
+        for file in files:
+            datafile = {
+                'filename' : file.filename,
+                'path' : '/media/files/' + file.filename,
+                'id_task' : file.task.id
+            }
+
+            data.append(datafile)
+
+        return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 class CreateTask(View): 
@@ -110,7 +131,7 @@ class AddFileTask(View):
             file = fss.save(image.name, image)
             id_task = request.POST.get('id_task')
             task = Task.objects.get(id = id_task)
-            fileTaskModel = FilesTask(file = file, task = task)
+            fileTaskModel = FilesTask(filename = image.name, file = file, task = task)
             fileTaskModel.save()
 
             data = {

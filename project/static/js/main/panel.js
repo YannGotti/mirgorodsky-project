@@ -18,12 +18,29 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+function loadFilesList(id_task){
+    let filesListTask = document.getElementById('filesListTask_' + id_task);
+    filesListTask.innerHTML = ``;
+    $.ajax({
+        url: 'api/v.1/selectFiles?id_task=' + id_task,
+        method: 'get',
+        success: function(data){
 
+            let filesDiv = document.getElementById('filesListDiv_' + id_task);
+            filesDiv.style.display = 'block';
+
+            for (const file of data) {
+                createFileTaskDiv(file);
+            }
+        },
+        error: function (jqXHR, exception) {
+            return;
+        }
+    });
+}
 
 function addFile(id_task){
     const inputFile = document.getElementById("formFileSm_" + id_task);
-
-    
 
     let csrftoken = getCookie('csrftoken');
 

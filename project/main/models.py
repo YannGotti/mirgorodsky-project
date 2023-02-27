@@ -25,7 +25,15 @@ class Task(models.Model):
 
 
 class FilesTask(models.Model):
+    filename = models.CharField('Имя файла', max_length=150)
     file = models.FileField('Прикрепленный файл к задаче', upload_to='files/', blank=True, null=True)
     task = models.ForeignKey(Task, verbose_name='Прикрепленная задача', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.filename}, {self.task}'
+    
+    class Meta:
+        verbose_name = 'Файл'
+        verbose_name_plural = 'Файлы'
 
 
