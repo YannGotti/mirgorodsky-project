@@ -40,11 +40,27 @@ function createTaskDiv(task){
                             </div>
 
                             <div class="row d-flex justify-content-center mt-3">
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <label for="descriptionTask_` + task.pk + `" class="form-label text-panel">Добавить описание</label>
-                                        <textarea class="form-control text-panel-description" id="descriptionTask_` + task.pk + `" rows="2" onclick="addEventListener('focusout', addDescription)">` + fields.description + `</textarea>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label text-panel">Добавить категорию</label>
+
+                                    <div class="row d-flex justify-content-start" id="customFlagsList_` + task.pk + `">
+                                        
                                     </div>
+
+                                    <input class="form-control form-control-sm text-panel" type="text" placeholder="Категория..." aria-label=".form-control-sm example" onsubmit="return;">
+                                    
+                                </div>
+                            </div>
+
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label text-panel">Выбрать сложность</label>
+                                    <button class="btn btn-outline-white btn-sm dropdown-toggle flag-panel" id="FlagList_` + task.pk + `" style="width: 100%;" type="button" data-bs-toggle="dropdown" aria-expanded="false">` + fields.flag + `</button>
+                                    <ul class="dropdown-menu" style="width: 80%;">
+                                        <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(1, ` + task.pk + `)"  style="width: 100%;">Легко</button></li>
+                                        <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(2, ` + task.pk + `)"  style="width: 100%;">Средне</button></li>
+                                        <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(3, ` + task.pk + `)"  style="width: 100%;">Сложно</button></li>
+                                    </ul>
                                 </div>
                             </div>
 
@@ -64,19 +80,18 @@ function createTaskDiv(task){
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                       
+
 
                             <div class="row d-flex justify-content-center">
-                                <div class="col-12 mb-3">
-                                    <label class="form-label text-panel">Выбрать сложность</label>
-                                    <button class="btn btn-outline-white btn-sm dropdown-toggle flag-panel" id="FlagList_` + task.pk + `" style="width: 100%;" type="button" data-bs-toggle="dropdown" aria-expanded="false">` + fields.flag + `</button>
-                                        <ul class="dropdown-menu" style="width: 80%;">
-                                            <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(1, ` + task.pk + `)"  style="width: 100%;">Легко</button></li>
-                                            <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(2, ` + task.pk + `)"  style="width: 100%;">Средне</button></li>
-                                            <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(3, ` + task.pk + `)"  style="width: 100%;">Сложно</button></li>
-                                        </ul>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="descriptionTask_` + task.pk + `" class="form-label text-panel">Добавить описание</label>
+                                        <textarea class="form-control text-panel-description" id="descriptionTask_` + task.pk + `" rows="2" onclick="addEventListener('focusout', addDescription)">` + fields.description + `</textarea>
+                                    </div>
                                 </div>
                             </div>
+
 
                             <div class="row d-flex justify-content-center">
                                 <div class="col-12 mb-3">
@@ -84,7 +99,6 @@ function createTaskDiv(task){
                                     <input class="form-control form-control-sm text-dark text-button-form  text-center datepick datepicks" id="datepick_` + task.pk + `" type="text" placeholder="Завершение ` + dateParse(date_finish) + `">
                                 </div>
                             </div>
-
 
 
                             <div class="row d-flex justify-content-between footer-panel mt-2">
@@ -147,4 +161,22 @@ function createFileTaskDiv(data){
         </div>
     </li>
     `
+}
+
+function createCustomFlagsDiv(data){
+
+    let customFlagsList = document.getElementById('customFlagsList_' + data.id_task);
+
+    customFlagsList.innerHTML += 
+    `
+    <div class="col-4 mt-1 mb-1">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-sm btn-outline-danger text-panel">`+ data.flag_name +`</button>
+            <button type="button" class="btn btn-sm btn-outline-danger">
+                <img src="static/image/main/deleteFile.png" width="18px" height="18px" style="cursor: pointer;">
+            </button>
+          </div>
+    </div>
+    `
+
 }

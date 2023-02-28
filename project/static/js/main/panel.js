@@ -1,30 +1,5 @@
 
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
 
-function csrfSafeMethod(method) {
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-
-function setFlagDiv(flag, task){
-    let flagList = document.getElementById('FlagList_' + task)
-
-    let flag_text = (flag == 1) ? 'Легко' : (flag == 2) ? 'Средне' : (flag == 3) ? 'Сложно' : null;
-    flagList.innerText = flag_text;
-    return flag_text;
-}
 
 function setFlag(flag, id_task){
     $.ajax({
@@ -149,10 +124,6 @@ function addDescription(e){
     let id_task = e.target.id.split('_')[1];
     let description = e.target.value;
 
-    if (description == ''){
-        return;
-    }
-
     $.ajax({
         url: 'api/v.1/addDescriptionTask?id=' + id_task + '&description=' + description,
         method: 'get',
@@ -191,6 +162,33 @@ function AjaxRenameTask(e){
             return;
         }
     });
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+function setFlagDiv(flag, task){
+    let flagList = document.getElementById('FlagList_' + task)
+
+    let flag_text = (flag == 1) ? 'Легко' : (flag == 2) ? 'Средне' : (flag == 3) ? 'Сложно' : null;
+    flagList.innerText = flag_text;
+    return flag_text;
 }
 
 function CallToastPanel(message){

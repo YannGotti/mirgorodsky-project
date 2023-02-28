@@ -24,6 +24,16 @@
     box-shadow: none;
 }
 
+.form-control.text-panel{
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
+.form-control.text-panel:focus{
+    border-color: #5e6164;
+    box-shadow: none;
+}
+
 .btn.text-panel:focus{
     border-color: white;
     box-shadow: none;
