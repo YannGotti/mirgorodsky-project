@@ -29,6 +29,16 @@
     box-shadow: none;
 }
 
+.flag-panel{
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn.flag-panel{
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
 .form-control.text-rename-panel{
     border: none;
     box-shadow: none;

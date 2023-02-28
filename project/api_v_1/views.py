@@ -155,3 +155,12 @@ class DeleteFileTask(View):
         filescount = FilesTask.objects.filter(task = task)
 
         return HttpResponse(filescount.count())
+    
+class SetFlagTask(View):
+    def get(self, request):
+        data = request.GET
+        task = Task.objects.get(id = data.get('id'))
+        task.flag = int(data.get('flag'))
+        task.save()
+
+        return HttpResponse(task.flag)

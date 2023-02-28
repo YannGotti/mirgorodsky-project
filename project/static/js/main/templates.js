@@ -64,8 +64,18 @@ function createTaskDiv(task){
                                         </ul>
                                     </div>
                                 </div>
+                            </div>
 
-
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label text-panel">Выбрать сложность</label>
+                                    <button class="btn btn-outline-white btn-sm dropdown-toggle flag-panel" id="FlagList_` + task.pk + `" style="width: 100%;" type="button" data-bs-toggle="dropdown" aria-expanded="false">` + fields.flag + `</button>
+                                        <ul class="dropdown-menu" style="width: 80%;">
+                                            <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(1, ` + task.pk + `)"  style="width: 100%;">Легко</button></li>
+                                            <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(2, ` + task.pk + `)"  style="width: 100%;">Средне</button></li>
+                                            <li><button type="button" class="btn btn-outline-light text-dark  text-panel" onclick="setFlag(3, ` + task.pk + `)"  style="width: 100%;">Сложно</button></li>
+                                        </ul>
+                                </div>
                             </div>
 
                             <div class="row d-flex justify-content-center">
@@ -101,14 +111,28 @@ function createTaskDiv(task){
                 </div>
             `
 
-        let favotite = document.getElementById('setFavorite_' + task.pk);
 
-        if (task.fields.favorite){
-            favotite.innerHTML += `<img width="25px" id="task_favorite_` + task.pk + `" onclick="setFavorite(` + task.pk + `)" src="/static/image/main/active_star.png" alt="">`
+        function setFavorite(){
+            let favotite = document.getElementById('setFavorite_' + task.pk);
+
+            if (task.fields.favorite){
+                favotite.innerHTML += `<img width="25px" id="task_favorite_` + task.pk + `" onclick="setFavorite(` + task.pk + `)" src="/static/image/main/active_star.png" alt="">`
+            }
+            else{
+                favotite.innerHTML += `<img width="25px" id="task_favorite_` + task.pk + `" onclick="setFavorite(` + task.pk + `)" src="/static/image/main/disabled_star.png/" alt="">`
+            }
         }
-        else{
-            favotite.innerHTML += `<img width="25px" id="task_favorite_` + task.pk + `" onclick="setFavorite(` + task.pk + `)" src="/static/image/main/disabled_star.png/" alt="">`
+
+        function setFlag(){
+            let flagList = document.getElementById('FlagList_' + task.pk)
+
+            let flag = (fields.flag == 1) ? 'Легко' : (fields.flag == 2) ? 'Средне' : (fields.flag == 3) ? 'Сложно' : null;
+            flagList.innerText = flag;
         }
+        
+        setFavorite();
+        setFlag();
+        
 
 }
 

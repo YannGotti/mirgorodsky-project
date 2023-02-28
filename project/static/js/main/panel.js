@@ -18,6 +18,24 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+function setFlag(flag, id_task){
+    console.log(flag, id_task)
+
+    $.ajax({
+        url: 'api/v.1/setFlagTask?id=' + id_task + '&flag=' + flag,
+        method: 'get',
+        success: function(data){
+            let flagList = document.getElementById('FlagList_' + id_task);
+            let flag = (data == 1) ? 'Легко' : (data == 2) ? 'Средне' : (data == 3) ? 'Сложно' : null;
+            flagList.innerText = flag;
+            CallToastPanel('Сложность "'+ flag +'" установлена!');
+        },
+        error: function (jqXHR, exception) {
+            return;
+        }
+    });
+}
+
 function deleteFile(filename, id_task){
     $.ajax({
         url: 'api/v.1/deleteFileTask?id=' + id_task + '&filename=' + filename,

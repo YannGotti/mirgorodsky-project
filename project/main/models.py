@@ -2,11 +2,12 @@ from django.db import models
 
 class Task(models.Model): 
     title = models.CharField('Задача', max_length=50)
-    description = models.CharField('Описание', max_length=50)
+    description = models.TextField('Описание')
     is_ready = models.BooleanField('Выполнено?', default=False)
     favorite = models.BooleanField('Избранное?', default=False)
     date_create = models.DateField('Дата создания', auto_now=True)
     date_finish = models.DateField('Дата завершения', null=True)
+
 
     flags = [
         (1, 'Легко'),
@@ -14,10 +15,13 @@ class Task(models.Model):
         (3, 'Сложно'),
     ]
 
-    flag = models.IntegerField('Флаг', default=1, choices=flags)
+    flag = models.IntegerField('Сложность', default=1, choices=flags)
+
+    custom_flags = models.JSONField('Флаги пользователя', null=True)
+
 
     def __str__(self):
-        return f'{self.title}, {self.description}, {self.flag}, {self.is_ready}'
+        return f'{self.title}, {self.description}, {self.flag}, {self.is_ready}, {self.custom_flags}'
     
     class Meta:
         verbose_name = 'Задачу'
