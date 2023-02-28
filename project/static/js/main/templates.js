@@ -123,15 +123,8 @@ function createTaskDiv(task){
             }
         }
 
-        function setFlag(){
-            let flagList = document.getElementById('FlagList_' + task.pk)
-
-            let flag = (fields.flag == 1) ? 'Легко' : (fields.flag == 2) ? 'Средне' : (fields.flag == 3) ? 'Сложно' : null;
-            flagList.innerText = flag;
-        }
-        
         setFavorite();
-        setFlag();
+        setFlagDiv(fields.flag, task.pk)
         
 
 }
