@@ -14,4 +14,7 @@ urlpatterns = [
     path('api/v.1/addFileTask/', views.AddFileTask.as_view()),
     path('api/v.1/deleteFileTask/', views.DeleteFileTask.as_view()),
     path('api/v.1/setFlagTask/', views.SetFlagTask.as_view()),
+    path('api/v.1/addCustomFlag/', views.CustomFlags.as_view()),
+    path('api/v.1/selectCustomFlags/', views.CustomFlags.as_view()),
+    path('api/v.1/deleteCustomFlag/', views.DeleteCustomFlags.as_view()),
 ]

@@ -14,7 +14,7 @@ function createTaskDiv(task){
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"  onclick="readyTask(` + task.pk + `)">
                                 <label class="form-check-label text-task mx-4" for="flexCheckDefault">
-                                    <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" id="task_title_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `"  onclick="loadFilesList(` + task.pk + `); openPanelTask(` + task.pk + `)">` + fields.title + `</a>
+                                    <a  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling_` + task.pk + `" id="task_title_` + task.pk + `" aria-controls="offcanvasScrolling_` + task.pk + `"  onclick="InitPanelData(` + task.pk + `);">` + fields.title + `</a>
                                 </label>
                                 <label class="form-check-label mx-1 text-finish-task" id="finishDate_` + task.pk + `">Завершение ` + dateParse(date_finish) + `</label>
                               </div>
@@ -46,8 +46,9 @@ function createTaskDiv(task){
                                     <div class="row d-flex justify-content-start" id="customFlagsList_` + task.pk + `">
                                         
                                     </div>
-
-                                    <input class="form-control form-control-sm text-panel" type="text" placeholder="Категория..." aria-label=".form-control-sm example" onsubmit="return;">
+                                    <form onsubmit="addCustomFlag(` + task.pk + `); return false;">
+                                        <input class="form-control form-control-sm text-panel" id="inputCustomFlag_` + task.pk + `" type="text" placeholder="Категория..." aria-label=".form-control-sm example" >
+                                    </form>
                                     
                                 </div>
                             </div>
@@ -167,16 +168,45 @@ function createCustomFlagsDiv(data){
 
     let customFlagsList = document.getElementById('customFlagsList_' + data.id_task);
 
+
     customFlagsList.innerHTML += 
     `
-    <div class="col-4 mt-1 mb-1">
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-sm btn-outline-danger text-panel">`+ data.flag_name +`</button>
-            <button type="button" class="btn btn-sm btn-outline-danger">
-                <img src="static/image/main/deleteFile.png" width="18px" height="18px" style="cursor: pointer;">
+    <div class="col-6 mt-1 mb-1 customFlag_`+ data.flagName +`" id="customFlag_`+ data.id_flag +`">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown " id="flag-custom-color_`+ data.id_flag +`">
+            <button type="button" class="btn btn-sm text-panel text-wrap">`+ data.flagName +`</button>
+            <button type="button" class="btn btn-sm">
+                <img src="static/image/main/deleteFile.png" width="18px" height="18px" style="cursor: pointer;" onclick="deleteCustomFlag('`+ data.flagName +`', `+ data.id_flag +`, `+ data.id_task +`)">
             </button>
           </div>
     </div>
     `
+    let customFlag = document.getElementById('customFlag_' + data.id_flag);
+
+    let classname = (data.flagName.length < 5) ? 'col-3'
+    : (data.flagName.length < 10) ? 'col-7' 
+    : (data.flagName.length <= 15) ? 'col-9' : null;
+
+    customFlag.classList.replace('col-6', classname);
+
+    let colorDivs = document.getElementById('flag-custom-color_' + data.id_flag)
+    color = RANDOM_COLORS_CLASSES[parseInt(getRandomArbitrary(0, RANDOM_COLORS_CLASSES.length))]
+
+    for (const div of colorDivs.children) {
+        div.classList.add(color);
+    }
 
 }
+
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+RANDOM_COLORS_CLASSES = [
+    'btn-outline-danger',
+    'btn-outline-secondary',
+    'btn-outline-dark',
+    'btn-outline-success',
+    'btn-outline-warning',
+    'btn-outline-info',
+    'btn-outline-light'
+]

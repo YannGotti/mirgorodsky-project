@@ -7,6 +7,7 @@ from django.core.files.storage import FileSystemStorage
 import json
 
 import datetime
+import random
 
 class AjaxRequestDataTasks(View):
     def get(self, request):
@@ -164,3 +165,61 @@ class SetFlagTask(View):
         task.save()
 
         return HttpResponse(task.flag)
+
+class CustomFlags(View):
+    def get(self, request):
+        data = request.GET
+
+        task = Task.objects.get(id = data.get('id'))
+
+
+        if (not data.get('flagName')):
+            return HttpResponse(json.dumps(task.custom_flags), content_type="application/json")
+
+        flagName = data.get('flagName')
+
+        flags = []
+        
+        random.seed(random.randrange(0,1000))
+        dataFlag = {
+                'flagName' : flagName,
+                'id_task' : data.get('id'),
+                'id_flag' : random.random()
+            }
+
+        
+        if (task.custom_flags == None):
+            flags.append(dataFlag)
+            task.custom_flags = flags
+        else:
+            flags = json.loads(json.dumps(task.custom_flags))
+            flags.append(dataFlag)
+            task.custom_flags = flags
+
+        if (len(flags) > 5):
+            info = {
+                'error' : 'exceeds the allowable',
+            }
+            return HttpResponse(json.dumps(info), content_type="application/json")
+
+        task.save()
+        return HttpResponse(json.dumps(dataFlag), content_type="application/json")
+    
+class DeleteCustomFlags(View):
+    def get(self, request):
+        data = request.GET
+
+        dataFlag = {
+                'flagName' : data.get('flagName'),
+                'id_task' : data.get('id_task'),
+                'id_flag' : float(data.get('id_flag'))
+            }
+        
+        task = Task.objects.get(id = data.get('id_task'))
+        
+        flags = json.loads(json.dumps(task.custom_flags))
+        flags.remove(dataFlag)
+        task.custom_flags = flags
+        task.save()
+
+        return HttpResponse('Ok')
