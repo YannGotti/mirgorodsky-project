@@ -179,12 +179,10 @@ class CustomFlags(View):
         flagName = data.get('flagName')
 
         flags = []
-        
-        random.seed(random.randrange(0,1000))
         dataFlag = {
                 'flagName' : flagName,
                 'id_task' : data.get('id'),
-                'id_flag' : random.random()
+                'id_flag' : random.randrange(0, 1000000000)
             }
 
         

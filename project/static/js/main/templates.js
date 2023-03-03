@@ -172,8 +172,8 @@ function createCustomFlagsDiv(data){
     customFlagsList.innerHTML += 
     `
     <div class="col-6 mt-1 mb-1 customFlag_`+ data.flagName +`" id="customFlag_`+ data.id_flag +`">
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown " id="flag-custom-color_`+ data.id_flag +`">
-            <button type="button" class="btn btn-sm text-panel text-wrap">`+ data.flagName +`</button>
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown " id="flag-custom-color_`+ data.id_flag +`_`+ data.flagName +`">
+            <button type="button" class="btn btn-sm text-panel text-wrap text-dark">`+ data.flagName +`</button>
             <button type="button" class="btn btn-sm">
                 <img src="static/image/main/deleteFile.png" width="18px" height="18px" style="cursor: pointer;" onclick="deleteCustomFlag('`+ data.flagName +`', `+ data.id_flag +`, `+ data.id_task +`)">
             </button>
@@ -182,13 +182,13 @@ function createCustomFlagsDiv(data){
     `
     let customFlag = document.getElementById('customFlag_' + data.id_flag);
 
-    let classname = (data.flagName.length < 5) ? 'col-3'
+    let classname = (data.flagName.length < 5) ? 'col-4'
     : (data.flagName.length < 10) ? 'col-7' 
     : (data.flagName.length <= 15) ? 'col-9' : null;
 
     customFlag.classList.replace('col-6', classname);
 
-    let colorDivs = document.getElementById('flag-custom-color_' + data.id_flag)
+    let colorDivs = document.getElementById('flag-custom-color_' + data.id_flag + '_' + data.flagName)
     color = RANDOM_COLORS_CLASSES[parseInt(getRandomArbitrary(0, RANDOM_COLORS_CLASSES.length))]
 
     for (const div of colorDivs.children) {
@@ -208,5 +208,4 @@ RANDOM_COLORS_CLASSES = [
     'btn-outline-success',
     'btn-outline-warning',
     'btn-outline-info',
-    'btn-outline-light'
 ]
