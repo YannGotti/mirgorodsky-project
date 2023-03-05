@@ -17,7 +17,7 @@ class Task(models.Model):
 
     flag = models.IntegerField('Сложность', default=1, choices=flags)
 
-    custom_flags = models.JSONField('Флаги пользователя', null=True)
+    custom_flags = models.JSONField('Флаги пользователя',default=list, null=True)
 
 
     def __str__(self):

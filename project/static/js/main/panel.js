@@ -14,6 +14,12 @@ function deleteCustomFlag(flagName, id_flag, id_task){
             let flagDiv = document.getElementById('customFlag_' + id_flag);
             flagDiv.remove();
 
+            if (data == 0) {
+                deleteCustomFlagsDiv(flagName);
+            }
+
+            getStateFilter(flagName, id_task);
+
             CallToastPanel('Категория "'+ flagName +'" успешно удалена!');
         },
         error: function (jqXHR, exception) {
@@ -47,6 +53,14 @@ function addCustomFlag(id_task){
             }
             inputCustomFlag.value = null;
             createCustomFlagsDiv(data);
+
+            if (!getCountCustomFlagsDiv(flagName)){
+                let data = {
+                    'flagName' : flagName
+                }
+                createFilterChoise(data);
+            }
+
             CallToastPanel('Вы успешно создали категорию '+ data.flagName + '!');
         },
         error: function (jqXHR, exception) {

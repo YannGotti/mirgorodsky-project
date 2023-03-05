@@ -55,10 +55,10 @@
     
                 <div class="col-4 col-lg-2 mx-0" id="button-dropdown">
                     <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle text text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="filter_choise" onclick="">
+                        <button class="btn btn-outline-light dropdown-toggle text text-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="filter_choise">
                             Все
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-light">
+                        <ul class="dropdown-menu dropdown-menu-light" id="filter-list">
     
                             <li><a class="dropdown-item text" href="#" onclick="filterAjax('all', 'Все')">Все</a></li>
                             <li><a class="dropdown-item text" href="#" onclick="filterAjax('favorite', 'Избранные')">Избранные</a></li>
@@ -67,6 +67,7 @@
                             <li><a class="dropdown-item  text" href="#" onclick="filterAjax('easy', 'Легкие')">Легкие</a></li>
                             <li><a class="dropdown-item  text" href="#" onclick="filterAjax('normal', 'Средние')">Средние</a></li>
                             <li><a class="dropdown-item  text" href="#" onclick="filterAjax('hard', 'Сложные')">Сложные</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             
                         </ul>
                         </div>

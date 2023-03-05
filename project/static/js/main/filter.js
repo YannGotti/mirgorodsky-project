@@ -1,10 +1,55 @@
 
+function getAllCustomFlags(){
+    $.ajax({
+        url: 'api/v.1/selectAllTasks?method=customFlags',
+        method: 'get',
+        success: function(data){
+            for (const filter of data) {
+                createFilterChoise(filter);
+                CUSTOM_FLAGS.push(filter.flagName);
+            }
+        },
+        error: function (jqXHR, exception) {
+            return;
+        }
+    });
+}
+
+
+getAllCustomFlags();
+
+
+function getCountCustomFlagsDiv(name){
+    let custom_filters = document.getElementById('filter-list').children;
+    for (const filter of custom_filters) {
+        if (filter.children[0].textContent == name){
+            return true;
+        }
+    }
+}
+
+function deleteCustomFlagsDiv(name){
+    let custom_filters = document.getElementById('filter-list').children;
+    for (const filter of custom_filters) {
+        if (filter.children[0].textContent == name){
+            filter.remove();
+            return;
+        }
+    }
+}
 
 
 function filterAjax(method, filtername){
 
+    let new_url = 'api/v.1/selectAllTasks?method=' + method;
+
+    if (CUSTOM_FLAGS.includes(method)){
+        new_url = 'api/v.1/selectAllTasks?method=customFlagTasks&flagName=' + method;
+    }
+
     $.ajax({
-        url: 'api/v.1/selectAllTasks?method=' + method,
+
+        url: new_url,
         method: 'get',
         success: function(data){
 
@@ -40,7 +85,6 @@ function getStateFilter(action = null, id_task = null){
     let stateFilterCookie = document.cookie.replace(/(?:(?:^|.*;\s*)stateFilter\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     let tasks_list = document.getElementById('tasks-list');
     let count_task = tasks_list.childElementCount / 2;
-    console.log(stateFilterCookie);
 
     if (stateFilterCookie == 'favorite'){
         validation(count_task, id_task);
@@ -51,12 +95,15 @@ function getStateFilter(action = null, id_task = null){
         validation(count_task, id_task);
         return;
     }
+    if (CUSTOM_FLAGS.includes(stateFilterCookie) && stateFilterCookie == action){
+        validation(count_task, id_task);
+        return;
+    }
 
     
 }
 
 function validation(count_task, id_task){
-    console.log(count_task);
     if (count_task > 1){
         let select_task = document.getElementById('task_' + id_task);
 
@@ -68,7 +115,7 @@ function validation(count_task, id_task){
         return;
     }
 
-    filterAjax('all');
+    filterAjax('all', 'Все');
 }
 
 const DEFAULT_FLAGS = [
@@ -76,3 +123,5 @@ const DEFAULT_FLAGS = [
     'normal',
     'hard'
 ]
+
+let CUSTOM_FLAGS = []

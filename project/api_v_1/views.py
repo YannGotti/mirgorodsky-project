@@ -31,8 +31,39 @@ class AjaxRequestDataTasks(View):
         if (method == 'hard'):
             tasks = Task.objects.filter(is_ready=False, flag = 3)
 
-        data = serializers.serialize('json', tasks)
+        if (method == 'customFlags'):
+            tasks = Task.objects.filter(is_ready=False)
+            flags = []
+            for task in tasks:
+                flag = json.loads(json.dumps(task.custom_flags))
+                for params in flag:
 
+                    meta = {
+                            'flagName' : params['flagName']
+                        }
+
+                    if meta not in flags:
+                        flags.append(meta)
+
+            return JsonResponse(flags, safe=False)
+        
+        if (method == 'customFlagTasks'):
+            flagName = data.get('flagName')
+
+            tasks = Task.objects.filter(is_ready=False)
+            data_tasks = []
+            for task in tasks:
+                flag = json.loads(json.dumps(task.custom_flags))
+                for params in flag:
+                    if (params['flagName'] == flagName):
+                        data_tasks.append(task)
+                    
+            data_tasks = serializers.serialize('json', data_tasks)
+            return HttpResponse(data_tasks, content_type="application/json")
+
+
+
+        data = serializers.serialize('json', tasks)
         return HttpResponse(data, content_type="application/json")
         
     
@@ -241,4 +272,13 @@ class DeleteCustomFlags(View):
         task.custom_flags = flags
         task.save()
 
-        return HttpResponse('Ok')
+
+        tasks = Task.objects.filter(is_ready=False)
+        count_flags = 0
+        for task in tasks:
+            flag = json.loads(json.dumps(task.custom_flags))
+            for params in flag:
+                if (params['flagName'] == data.get('flagName')):
+                    count_flags += 1
+                
+        return HttpResponse(count_flags)

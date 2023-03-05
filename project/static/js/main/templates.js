@@ -197,6 +197,15 @@ function createCustomFlagsDiv(data){
 
 }
 
+function createFilterChoise(data){
+    let filter_list = document.getElementById('filter-list');
+
+    filter_list.innerHTML += 
+    `
+        <li><a class="dropdown-item  text-custom-filter" href="#" onclick="filterAjax('` + data.flagName + `', '` + data.flagName + `')">` + data.flagName + `</a></li>
+    `
+}
+
 function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   }
