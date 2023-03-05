@@ -16,10 +16,11 @@ function checkCountTasks(task_count){
 
 function InitMainPage(){
     $.ajax({
-        url: 'api/v.1/selectAllTasks/',
+        url: 'api/v.1/selectAllTasks?method=all',
         method: 'get',
         success: function(data){
-
+           
+            document.cookie = "stateFilter=all; path=/;"
             checkCountTasks(data.length);
             
             for (const task of data) {
@@ -53,13 +54,7 @@ function addTask(){
             createOnePickerPanel(task);
             form.elements.title.value = '';
 
-            let all_offcanvas = document.getElementsByClassName('all_offcanvas');
-
             checkCountTasks();
-
-            for (let offcanvas of all_offcanvas) {
-                offcanvas.classList.replace('show', 'hide');
-            }
             closePanelTask();
 
         },
@@ -105,6 +100,7 @@ function setFavorite(task){
 
             else{
                 task_favorite.setAttribute('src', '/static/image/main/disabled_star.png');
+                getStateFilter(null, task);
             }
         },
         error: function (jqXHR, exception) {
@@ -112,6 +108,8 @@ function setFavorite(task){
         }
     });
 }
+
+
 
 function openPanelTask(task){
 
@@ -137,6 +135,12 @@ function openPanelTask(task){
 }
 
 function closePanelTask(){
+
+    let all_offcanvas = document.getElementsByClassName('all_offcanvas');
+
+    for (let offcanvas of all_offcanvas) {
+        offcanvas.classList.replace('show', 'hide');
+    }
 
     let point_tasks = document.getElementsByClassName('point-task');
     let dropdown = document.getElementById('button-dropdown');

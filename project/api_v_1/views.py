@@ -11,9 +11,30 @@ import random
 
 class AjaxRequestDataTasks(View):
     def get(self, request):
-        tasks = Task.objects.filter(is_ready = False)
+        data = request.GET
+        method = data.get('method')
+
+        tasks = None
+
+        if (method == 'all'):
+            tasks = Task.objects.filter(is_ready=False)
+        
+        if (method == 'favorite'):
+            tasks = Task.objects.filter(is_ready=False, favorite=True)
+        
+        if (method == 'easy'):
+            tasks = Task.objects.filter(is_ready=False, flag = 1)
+
+        if (method == 'normal'):
+            tasks = Task.objects.filter(is_ready=False, flag = 2)
+
+        if (method == 'hard'):
+            tasks = Task.objects.filter(is_ready=False, flag = 3)
+
         data = serializers.serialize('json', tasks)
+
         return HttpResponse(data, content_type="application/json")
+        
     
 class AjaxRequestFilesTasks(View):
     def get(self, request):

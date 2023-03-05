@@ -60,6 +60,11 @@ function setFlag(flag, id_task){
         url: 'api/v.1/setFlagTask?id=' + id_task + '&flag=' + flag,
         method: 'get',
         success: function(data){
+
+            let action = (flag == 1) ? 'easy' : (flag == 2) ? 'normal' : (flag == 3) ? 'hard' : null;
+
+            getStateFilter(action, id_task);
+
             CallToastPanel('Сложность "'+ setFlagDiv(data, id_task) +'" установлена!');
         },
         error: function (jqXHR, exception) {

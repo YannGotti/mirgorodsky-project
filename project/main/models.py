@@ -21,7 +21,7 @@ class Task(models.Model):
 
 
     def __str__(self):
-        return f'{self.title}, {self.description}, {self.flag}, {self.is_ready}, {self.custom_flags}'
+        return f'{self.title}, {self.description}, {self.flag}, {self.is_ready}'
     
     class Meta:
         verbose_name = 'Задачу'
