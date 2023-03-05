@@ -57,6 +57,7 @@ function addTask(){
             checkCountTasks();
             closePanelTask();
 
+            filterAjax('all', 'Все');
         },
         error: function (jqXHR, exception) {
             console.log(exception)

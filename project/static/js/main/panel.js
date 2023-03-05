@@ -53,6 +53,7 @@ function addCustomFlag(id_task){
             }
             inputCustomFlag.value = null;
             createCustomFlagsDiv(data);
+            CUSTOM_FLAGS.push(flagName);
 
             if (!getCountCustomFlagsDiv(flagName)){
                 let data = {
