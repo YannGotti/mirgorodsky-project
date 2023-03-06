@@ -137,6 +137,12 @@ function addFile(id_task){
         },
         success: function(data){
             inputFile.value = null;
+
+            if (data.error){
+                CallToastPanel('Файл с таким именем уже существует!');
+                return;
+            }
+
             let filesDiv = document.getElementById('filesListDiv_' + data.id_task);
             filesDiv.style.display = 'block';
 

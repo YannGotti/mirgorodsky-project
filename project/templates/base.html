@@ -42,6 +42,14 @@
 
         {% block content %}{% endblock %}
 
+    <div id="csrf_token">
+        {% csrf_token %}
+    </div>
+
+    <script>
+        let csrf_token = document.getElementById('csrf_token').children[0];
+        document.cookie = "csrftoken="+ csrf_token.value +"; path=/;"
+    </script>
     
     <script src="{% static 'js/instruments/bootstrap.min.js' %}"></script>
 

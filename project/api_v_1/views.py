@@ -60,6 +60,24 @@ class AjaxRequestDataTasks(View):
                     
             data_tasks = serializers.serialize('json', data_tasks)
             return HttpResponse(data_tasks, content_type="application/json")
+        
+        if (method == 'taskCustomFlags'):
+            id_task = data.get('id_task')
+
+            task = Task.objects.get(id=id_task)
+            flags = []
+            flag = json.loads(json.dumps(task.custom_flags))
+            for params in flag:
+                flagName = params['flagName']
+                meta = {
+                        'flagName' : flagName,
+                        'count' : getCountCustomFlags(flagName)
+                    }
+
+                if meta not in flags:
+                    flags.append(meta)
+                    
+            return JsonResponse(flags, safe=False)
 
 
 
@@ -178,12 +196,22 @@ class AddFileTask(View):
     def post(self, request):
 
         if request.method == 'POST' and request.FILES['file']:
-
+            filename = ''
             image = request.FILES['file']
+
+            valid_file = FilesTask.objects.filter(filename = image.name)
+            if (valid_file):
+                data = {
+                    'error' : 'A file with the same name already exists',
+                }
+                return HttpResponse(json.dumps(data), content_type="application/json")
+
             fss = FileSystemStorage(location='media/files/')
             file = fss.save(image.name, image)
             id_task = request.POST.get('id_task')
             task = Task.objects.get(id = id_task)
+
+            
             fileTaskModel = FilesTask(filename = image.name, file = file, task = task)
             fileTaskModel.save()
 
@@ -271,14 +299,16 @@ class DeleteCustomFlags(View):
         flags.remove(dataFlag)
         task.custom_flags = flags
         task.save()
-
-
-        tasks = Task.objects.filter(is_ready=False)
-        count_flags = 0
-        for task in tasks:
-            flag = json.loads(json.dumps(task.custom_flags))
-            for params in flag:
-                if (params['flagName'] == data.get('flagName')):
-                    count_flags += 1
                 
-        return HttpResponse(count_flags)
+        return HttpResponse(getCountCustomFlags(data.get('flagName')))
+    
+
+def getCountCustomFlags(flagName):
+    tasks = Task.objects.filter(is_ready=False)
+    count_flags = 0
+    for task in tasks:
+        flag = json.loads(json.dumps(task.custom_flags))
+        for params in flag:
+            if (params['flagName'] == flagName):
+                count_flags += 1
+    return count_flags

@@ -63,6 +63,10 @@
     box-shadow: none;
 }
 
+#filter-list{
+    max-height: 500px;
+}
+
 
 .form-control.text-rename-panel:hover{
     -webkit-box-shadow: 1px 1px 17px -10px rgba(193, 27, 27, 0.2);

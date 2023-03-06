@@ -74,11 +74,17 @@ function readyTask(task){
         success: function(data){
             let select_task = document.getElementById('task_' + task);
 
+            
+
             select_task.classList.remove('animate__fadeInDown');
             select_task.classList.add('animate__fadeOut');
 
             setTimeout(function(){ select_task.remove() }, 500);
             setTimeout(function(){ checkCountTasks(data.count) }, 1000);
+            setTimeout(function(){ closePanelTask(task) }, 500);
+
+
+            getTaskCustomFlags(task);
         },
         error: function (jqXHR, exception) {
             return;
@@ -135,13 +141,21 @@ function openPanelTask(task){
     }
 }
 
-function closePanelTask(){
+function closePanelTask(id_task){
 
-    let all_offcanvas = document.getElementsByClassName('all_offcanvas');
-
-    for (let offcanvas of all_offcanvas) {
+    if (id_task){
+        let offcanvas = document.getElementById('offcanvasScrolling_' + id_task)
         offcanvas.classList.replace('show', 'hide');
     }
+    else{
+        let all_offcanvas = document.getElementsByClassName('all_offcanvas');
+
+        for (let offcanvas of all_offcanvas) {
+            offcanvas.classList.replace('show', 'hide');
+        }
+    }
+
+    
 
     let point_tasks = document.getElementsByClassName('point-task');
     let dropdown = document.getElementById('button-dropdown');

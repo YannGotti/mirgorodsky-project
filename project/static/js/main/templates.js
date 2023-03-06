@@ -152,7 +152,7 @@ function createFileTaskDiv(data){
     <li id="`+ data.filename +`_`+ data.id_task +`">
         <div class="row d-flex justify-content-center">
             <div class="col-8">
-                <a target="_blank" href="`+ data.path +`" class="btn btn-outline-light text-panel text-dark text-start" download>`+ data.filename +`</a>
+                <a target="_blank" href="`+ data.path +`" class="btn btn-outline-light text-panel text-dark text-start text-wrap " style="width: 100%;" download>`+ data.filename +`</a>
             </div>
             <div class="col-2">
                 <button type="button" class="btn btn-outline-light text-panel">

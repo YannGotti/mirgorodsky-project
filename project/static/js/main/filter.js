@@ -15,9 +15,28 @@ function getAllCustomFlags(){
     });
 }
 
+function getTaskCustomFlags(id_task){
+    $.ajax({
+        url: 'api/v.1/selectAllTasks?method=taskCustomFlags&id_task=' + id_task,
+        method: 'get',
+        success: function(data){
+            for (const filter of data) {
+                delCustomFlagsDivIfDelTask(filter);
+            }
+        },
+        error: function (jqXHR, exception) {
+            return [];
+        }
+    });
+}
 
 getAllCustomFlags();
 
+function delCustomFlagsDivIfDelTask(data){
+    if (data.count == 0) {
+        deleteCustomFlagsDiv(data.flagName);
+    }
+}
 
 function getCountCustomFlagsDiv(name){
     let custom_filters = document.getElementById('filter-list').children;

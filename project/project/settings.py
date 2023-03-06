@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-lanizqo*bno%di#+s9+p0t$ti_dc4tohbilqk$0pmggu#gsq!o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'ea23-46-61-123-239.eu.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1', '7ff2-46-61-123-239.eu.ngrok.io']
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
