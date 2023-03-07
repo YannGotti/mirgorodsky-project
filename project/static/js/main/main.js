@@ -16,7 +16,7 @@ function checkCountTasks(task_count){
 
 function InitMainPage(){
     $.ajax({
-        url: 'api/v.1/selectAllTasks?method=all',
+        url: 'api/v.1/selectAllTasks/all/',
         method: 'get',
         success: function(data){
            

@@ -9,10 +9,51 @@ import json
 import datetime
 import random
 
-class AjaxRequestDataTasks(View):
-    def get(self, request):
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from drf_yasg import openapi
+
+
+
+#ROUTERS VIEWS
+class ReadyTask(viewsets.ViewSet):
+
+    @swagger_auto_schema(
+            operation_description='Завершение задачи',
+            responses={200: 'Данные получены'}
+    )
+    def list(self, request):
         data = request.GET
-        method = data.get('method')
+
+
+        task = Task.objects.get(id = int(data.get('id')))
+        task.is_ready = True
+        task.save()
+
+        tasks = Task.objects.filter(is_ready = False)
+
+        responseData = {
+            'count' : tasks.count(),
+        }
+
+        return JsonResponse(responseData)
+
+class AjaxRequestDataTasks(viewsets.ViewSet):
+
+    @swagger_auto_schema(
+            operation_description='Получение информации по фильтру',
+            responses={200: 'Ok'},
+    )
+    def list(self, request, method):
+        data = request.GET
+
+        if (not method):
+            method = data.get('method')
+
+
 
         tasks = None
 
@@ -84,9 +125,38 @@ class AjaxRequestDataTasks(View):
         data = serializers.serialize('json', tasks)
         return HttpResponse(data, content_type="application/json")
         
-    
-class AjaxRequestFilesTasks(View):
-    def get(self, request):
+class CreateTask(viewsets.ViewSet): 
+    @swagger_auto_schema(
+            operation_description='Завершение задачи',
+            responses={200: 'Задача создана!'},
+    )
+    def list(self, request):
+        data = request.GET
+
+        date_finish = data.get('date_finish')
+
+        task = Task(title= data.get('title'))
+
+        if (date_finish):
+            task.date_finish = date_finish
+        else:
+            new_date = datetime.datetime.today()
+            new_date = datetime.datetime(new_date.year + 1, new_date.month, new_date.day)
+            task.date_finish = new_date
+
+        task.save()
+
+        task = Task.objects.filter(id = task.id)
+        data = serializers.serialize('json', task)
+        return HttpResponse(data, content_type="application/json")
+ 
+
+class AjaxRequestFilesTasks(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Получить файлы задачи',
+            responses={200: 'Данные получены'}
+    )
+    def list(self, request):
         data = request.GET
         id_task = data.get('id_task')
 
@@ -107,47 +177,12 @@ class AjaxRequestFilesTasks(View):
         return HttpResponse(json.dumps(data), content_type="application/json")
 
 
-class CreateTask(View): 
-    def get(self, request):
-        data = request.GET
-
-        date_finish = data.get('date_finish')
-
-        task = Task(title= data.get('title'))
-
-        if (date_finish):
-            task.date_finish = date_finish
-        else:
-            new_date = datetime.datetime.today()
-            new_date = datetime.datetime(new_date.year + 1, new_date.month, new_date.day)
-            task.date_finish = new_date
-
-        task.save()
-
-        task = Task.objects.filter(id = task.id)
-        data = serializers.serialize('json', task)
-        return HttpResponse(data, content_type="application/json")
-    
-
-class ReadyTask(View):
-    def get(self, request):
-        data = request.GET
-
-        task = Task.objects.get(id = int(data.get('id')))
-        task.is_ready = True
-        task.save()
-
-        tasks = Task.objects.filter(is_ready = False)
-
-        responseData = {
-            'count' : tasks.count(),
-        }
-
-        return JsonResponse(responseData)
-
-
-class SetFavoriteTask(View):
-    def get(self, request):
+class SetFavoriteTask(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Задать приоритет задаче',
+            responses={200: 'Данные получены'}
+    )
+    def list(self, request):
         data = request.GET
 
         task = Task.objects.get(id = int(data.get("task")))
@@ -158,8 +193,12 @@ class SetFavoriteTask(View):
 
         return HttpResponse(int(task.favorite))
     
-class RenameTask(View):
-    def get(self, request):
+class RenameTask(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Переименовать задачу',
+            responses={200: 'Данные получены'},
+    )
+    def list(self, request):
         data = request.GET
 
         task = Task.objects.get(id = int(data.get("id")))
@@ -170,8 +209,12 @@ class RenameTask(View):
 
         return HttpResponse('Название изменено')
     
-class AddDescriptionTask(View):
-    def get(self, request):
+class AddDescriptionTask(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Добавить описание задаче',
+            responses={200: 'Данные получены'},
+    )
+    def list(self, request):
         data = request.GET
 
         task = Task.objects.get(id = int(data.get("id")))
@@ -181,8 +224,12 @@ class AddDescriptionTask(View):
 
         return HttpResponse('Описание изменено')
 
-class EditDateTask(View):
-    def get(self, request):
+class EditDateTask(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Изменить время завершения задаче',
+            responses={200: 'Данные получены'},
+    )
+    def list(self, request):
         data = request.GET
 
         task = Task.objects.get(id = int(data.get("id")))
@@ -192,7 +239,8 @@ class EditDateTask(View):
 
         return HttpResponse(task.date_finish)
     
-class AddFileTask(View):
+class AddFileTask(APIView):
+    @swagger_auto_schema(operation_description="Добавить файл")
     def post(self, request):
 
         if request.method == 'POST' and request.FILES['file']:
@@ -224,8 +272,12 @@ class AddFileTask(View):
             return HttpResponse(json.dumps(data), content_type="application/json")
         
 
-class DeleteFileTask(View):
-    def get(self, request):
+class DeleteFileTask(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Удалить файл задачи',
+            responses={200: 'Данные получены'},
+    )
+    def list(self, request):
         data = request.GET
         file = FilesTask.objects.get(filename = data.get('filename'))
         file.delete()
@@ -237,8 +289,12 @@ class DeleteFileTask(View):
 
         return HttpResponse(filescount.count())
     
-class SetFlagTask(View):
-    def get(self, request):
+class SetFlagTask(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Установить флаг задаче',
+            responses={200: 'Данные получены'},
+    )
+    def list(self, request):
         data = request.GET
         task = Task.objects.get(id = data.get('id'))
         task.flag = int(data.get('flag'))
@@ -246,8 +302,12 @@ class SetFlagTask(View):
 
         return HttpResponse(task.flag)
 
-class CustomFlags(View):
-    def get(self, request):
+class CustomFlags(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Установить кастомный флаг задаче',
+            responses={200: 'Данные получены'},
+    )
+    def list(self, request):
         data = request.GET
 
         task = Task.objects.get(id = data.get('id'))
@@ -283,8 +343,12 @@ class CustomFlags(View):
         task.save()
         return HttpResponse(json.dumps(dataFlag), content_type="application/json")
     
-class DeleteCustomFlags(View):
-    def get(self, request):
+class DeleteCustomFlags(viewsets.ViewSet):
+    @swagger_auto_schema(
+            operation_description='Удалить кастомный флаг',
+            responses={200: 'Ok'}
+    )
+    def list(self, request):
         data = request.GET
 
         dataFlag = {

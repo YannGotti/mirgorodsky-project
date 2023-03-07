@@ -28,9 +28,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'drf_yasg',
+
     'main.apps.MainConfig',
     'api_v_1.apps.ApiV1Config',
 ]
+
+SWAGGER_SETTINGS = {
+   'DEFAULT_INFO': 'project.urls.api_info',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

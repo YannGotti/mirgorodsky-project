@@ -1,7 +1,7 @@
 
 function getAllCustomFlags(){
     $.ajax({
-        url: 'api/v.1/selectAllTasks?method=customFlags',
+        url: 'api/v.1/selectAllTasks/customFlags/',
         method: 'get',
         success: function(data){
             for (const filter of data) {
@@ -17,7 +17,7 @@ function getAllCustomFlags(){
 
 function getTaskCustomFlags(id_task){
     $.ajax({
-        url: 'api/v.1/selectAllTasks?method=taskCustomFlags&id_task=' + id_task,
+        url: 'api/v.1/selectAllTasks/taskCustomFlags?id_task=' + id_task,
         method: 'get',
         success: function(data){
             for (const filter of data) {
@@ -60,10 +60,10 @@ function deleteCustomFlagsDiv(name){
 
 function filterAjax(method, filtername){
 
-    let new_url = 'api/v.1/selectAllTasks?method=' + method;
+    let new_url = 'api/v.1/selectAllTasks/' + method+'/';
 
     if (CUSTOM_FLAGS.includes(method)){
-        new_url = 'api/v.1/selectAllTasks?method=customFlagTasks&flagName=' + method;
+        new_url = 'api/v.1/selectAllTasks/customFlagTasks/?flagName=' + method;
     }
 
     $.ajax({
