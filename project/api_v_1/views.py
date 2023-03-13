@@ -12,14 +12,18 @@ import random
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.views import APIView
+from drf_yasg import openapi
+
 
 
 #ROUTERS VIEWS
 class AjaxRequestDataTasks(viewsets.ViewSet):
+    flagName_swagger = openapi.Parameter('flagName', openapi.IN_QUERY, description="Имя кастомного флага, использовать только с customFlagTasks", type=openapi.TYPE_STRING)
 
     @swagger_auto_schema(
-            operation_description='Получение информации по фильтру',
-            responses={200: 'Ok'},
+            operation_description='Получение информации по фильтру. 1.all, 2.favorite, 3.easy, 4.normal, 5.hard, 6.customFlagTasks',
+            responses={200: 'Задачи получены'},
+            manual_parameters=[flagName_swagger]
     )
     def list(self, request, method):
         data = request.GET
@@ -125,7 +129,13 @@ class TaskRequest(APIView):
         data = serializers.serialize('json', task)
         return HttpResponse(data, content_type="application/json")
     
-    @swagger_auto_schema(operation_description='Создать задачу')
+    id_swagger = openapi.Parameter('id', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+
+    @swagger_auto_schema(
+        operation_description='Завершить задачу',
+        manual_parameters=[id_swagger],
+        responses={200:'Задача завершена'}
+    )
     def put(self, request):
         data = request.GET
 
@@ -143,8 +153,12 @@ class TaskRequest(APIView):
         return JsonResponse(responseData)
 
 class UpdateFavoriteTask(APIView):
+    id_swagger = openapi.Parameter('task', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+
     @swagger_auto_schema(
-        operation_description='Задать приоритет задаче'
+        operation_description='Изменить приоритет задаче',
+        manual_parameters=[id_swagger],
+        responses={200:'Приоритет изменен'}
     )
     def put(self, request):
         data = request.GET
@@ -157,8 +171,13 @@ class UpdateFavoriteTask(APIView):
         return HttpResponse(int(task.favorite))
     
 class RenameTask(APIView):
+    id_swagger = openapi.Parameter('id', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+    title_swagger = openapi.Parameter('title', openapi.IN_QUERY, description="Название задачи", type=openapi.TYPE_STRING)
+
     @swagger_auto_schema(
-        operation_description='Переименовать задачу'
+        operation_description='Изменить название задачи',
+        manual_parameters=[id_swagger, title_swagger],
+        responses={200:'Название изменено'}
     )
     def put(self, request):
         data = request.GET
@@ -171,8 +190,14 @@ class RenameTask(APIView):
         return HttpResponse('Название изменено')
 
 class UpdateDescriptionTask(APIView):
+
+    id_swagger = openapi.Parameter('id', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+    description_swagger = openapi.Parameter('description', openapi.IN_QUERY, description="Описание задачи", type=openapi.TYPE_STRING)
+
     @swagger_auto_schema(
-        operation_description='Добавить описание задаче'
+        operation_description='Изменить описание задаче',
+        manual_parameters=[id_swagger, description_swagger],
+        responses={200:'Описание изменено'}
     )
     def put(self, request):
         data = request.GET
@@ -198,9 +223,15 @@ class EditDateTask(APIView):
 
         return HttpResponse(task.date_finish)
 
+
 class FlagTask(APIView):
+    difficult = openapi.Parameter('flag', openapi.IN_QUERY, description="Сложность задачи, 1.Легко, 2.Нормально, 3.Сложно", type=openapi.TYPE_INTEGER, default=1)
+    id_swagger = openapi.Parameter('id', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+
     @swagger_auto_schema(
-        operation_description='Установить флаг задаче'
+        operation_description='Установить флаг задаче',
+        manual_parameters=[difficult, id_swagger],
+        responses={200:'Флаг изменен'}
     )
     def put(self, request):
         data = request.GET
@@ -211,8 +242,16 @@ class FlagTask(APIView):
         return HttpResponse(task.flag)
 
 class FileTask(APIView):
+    file_input = openapi.Parameter('file', openapi.IN_QUERY, description="Файл задачи", type=openapi.TYPE_FILE)
+    id_swagger = openapi.Parameter('id_task', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+    filename_swagger = openapi.Parameter('filename', openapi.IN_QUERY, description="Имя файла", type=openapi.TYPE_STRING)
 
-    @swagger_auto_schema(operation_description="Получить файлы задачи")
+    
+    @swagger_auto_schema(
+        operation_description='Получить файл задачи',
+        manual_parameters=[id_swagger],
+        responses={200:'Файлы получены'},
+    )
     def get(self, request):
         data = request.GET
         id_task = data.get('id_task')
@@ -233,7 +272,13 @@ class FileTask(APIView):
 
         return HttpResponse(json.dumps(data), content_type="application/json")
 
-    @swagger_auto_schema(operation_description="Добавить файл")
+    
+
+    @swagger_auto_schema(
+        operation_description='Добавить файл',
+        manual_parameters=[file_input, id_swagger],
+        responses={200:'Файл добавлен'},
+    )
     def post(self, request):
 
         if request.method == 'POST' and request.FILES['file']:
@@ -264,7 +309,11 @@ class FileTask(APIView):
 
             return HttpResponse(json.dumps(data), content_type="application/json")
         
-    @swagger_auto_schema(operation_description="Удалить файл")
+    @swagger_auto_schema(
+        operation_description='Удалить файл',
+        manual_parameters=[filename_swagger],
+        responses={200:'Файл удален'},
+    )
     def delete(self, request):
         data = request.GET
         file = FilesTask.objects.get(filename = data.get('filename'))
@@ -278,7 +327,16 @@ class FileTask(APIView):
         return HttpResponse(filescount.count())
 
 class CustomFlag(APIView):
-    @swagger_auto_schema(operation_description="Добавить флаг")
+    id_swagger = openapi.Parameter('id', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+    id_swagger_two = openapi.Parameter('id_task', openapi.IN_QUERY, description="ID задачи", type=openapi.TYPE_INTEGER)
+    id_flag_swagger = openapi.Parameter('id_flag', openapi.IN_QUERY, description="ID флага задачи", type=openapi.TYPE_INTEGER)
+    flagname_swagger = openapi.Parameter('flagName', openapi.IN_QUERY, description="Имя флага", type=openapi.TYPE_STRING)
+    
+    @swagger_auto_schema(
+        operation_description='Добавить флаг',
+        manual_parameters=[id_swagger, flagname_swagger],
+        responses={200:'Флаг добавлен'},
+    )
     def post(self, request):
         data = request.GET
 
@@ -315,7 +373,11 @@ class CustomFlag(APIView):
         task.save()
         return HttpResponse(json.dumps(dataFlag), content_type="application/json")
     
-    @swagger_auto_schema(operation_description="Удалить флаг")
+    @swagger_auto_schema(
+        operation_description='Удалить флаг',
+        manual_parameters=[id_swagger_two, id_flag_swagger, flagname_swagger],
+        responses={200:'Флаг удален'},
+    )
     def delete(self, request):
         data = request.GET
 

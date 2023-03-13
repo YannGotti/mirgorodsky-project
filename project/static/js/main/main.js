@@ -137,8 +137,6 @@ function setFavorite(task){
     });
 }
 
-
-
 function openPanelTask(task){
 
     let task_panel = document.getElementById('offcanvasScrolling_' + task);
