@@ -37,6 +37,8 @@ function InitMainPage(){
 InitMainPage();
 
 function addTask(){
+    let csrftoken = getCookie('csrftoken');
+
     let form = document.forms.task_form;
 
     let datePicker = document.getElementById('datePicker');
@@ -46,8 +48,13 @@ function addTask(){
     }
 
     $.ajax({
-        url: 'api/v.1/create_task?title=' + form.title.value + '&date_finish=' + datePicker.value,
-        method: 'get',
+        url: 'api/v.1/task/?title=' + form.title.value + '&date_finish=' + datePicker.value,
+        method: 'post',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(request){
             let task = request[0];
             createTaskDiv(task);
@@ -68,9 +75,16 @@ function addTask(){
 
 
 function readyTask(task){
+    let csrftoken = getCookie('csrftoken');
+
     $.ajax({
-        url: '/api/v.1/ready_task?id=' + task,
-        method: 'get',
+        url: '/api/v.1/task/?id=' + task,
+        method: 'put',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
             let select_task = document.getElementById('task_' + task);
 
@@ -95,9 +109,16 @@ function readyTask(task){
 }
 
 function setFavorite(task){
+    let csrftoken = getCookie('csrftoken');
+
     $.ajax({
-        url: '/api/v.1/setfavorite?task=' + task,
-        method: 'get',
+        url: '/api/v.1/updateFavoriteTask/?task=' + task,
+        method: 'put',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
             let task_favorite = document.getElementById('task_favorite_' + task);
 

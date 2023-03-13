@@ -7,9 +7,17 @@ function InitPanelData(task_id){
 }
 
 function deleteCustomFlag(flagName, id_flag, id_task){
+
+    let csrftoken = getCookie('csrftoken');
+
     $.ajax({
-        url: 'api/v.1/deleteCustomFlag?id_task=' + id_task + '&flagName=' + flagName + '&id_flag=' + id_flag,
-        method: 'get',
+        url: 'api/v.1/customFlag/?id_task=' + id_task + '&flagName=' + flagName + '&id_flag=' + id_flag,
+        method: 'delete',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
             let flagDiv = document.getElementById('customFlag_' + id_flag);
             flagDiv.remove();
@@ -29,6 +37,9 @@ function deleteCustomFlag(flagName, id_flag, id_task){
 }
 
 function addCustomFlag(id_task){
+
+    let csrftoken = getCookie('csrftoken');
+
     let inputCustomFlag = document.getElementById('inputCustomFlag_' + id_task);
     let flagName = inputCustomFlag.value;
 
@@ -43,8 +54,13 @@ function addCustomFlag(id_task){
     }
 
     $.ajax({
-        url: 'api/v.1/addCustomFlag?id=' + id_task + '&flagName=' + flagName,
-        method: 'get',
+        url: 'api/v.1/customFlag/?id=' + id_task + '&flagName=' + flagName,
+        method: 'post',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
 
             if (data.error){
@@ -71,9 +87,17 @@ function addCustomFlag(id_task){
 }
 
 function setFlag(flag, id_task){
+
+    let csrftoken = getCookie('csrftoken');
+
     $.ajax({
-        url: 'api/v.1/setFlagTask?id=' + id_task + '&flag=' + flag,
-        method: 'get',
+        url: 'api/v.1/flagTask/?id=' + id_task + '&flag=' + flag,
+        method: 'put',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
 
             let action = (flag == 1) ? 'easy' : (flag == 2) ? 'normal' : (flag == 3) ? 'hard' : null;
@@ -89,9 +113,17 @@ function setFlag(flag, id_task){
 }
 
 function deleteFile(filename, id_task){
+
+    let csrftoken = getCookie('csrftoken');
+
     $.ajax({
-        url: 'api/v.1/deleteFileTask?id=' + id_task + '&filename=' + filename,
-        method: 'get',
+        url: 'api/v.1/FileTask/?id=' + id_task + '&filename=' + filename,
+        method: 'delete',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
 
             if (data < 1){
@@ -110,8 +142,6 @@ function deleteFile(filename, id_task){
     });
 }
 
-
-
 function addFile(id_task){
     const inputFile = document.getElementById("formFileSm_" + id_task);
 
@@ -122,7 +152,7 @@ function addFile(id_task){
     formData.append('file', inputFile.files[0]);
 
     $.ajax({
-        url: 'api/v.1/addFileTask/',
+        url: 'api/v.1/FileTask/',
         method: 'post',
         data: formData,
         async: false,
@@ -157,10 +187,16 @@ function addFile(id_task){
 }
 
 function editDate(id_task, date){
+    let csrftoken = getCookie('csrftoken');
 
     $.ajax({
-        url: 'api/v.1/editDateTask?id=' + id_task + '&date=' + date,
-        method: 'get',
+        url: 'api/v.1/editDateTask/?id=' + id_task + '&date=' + date,
+        method: 'put',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
             let date_finish = dateParse(new Date(data));
             let inputDate = document.getElementById('datepick_' + id_task);
@@ -179,12 +215,21 @@ function editDate(id_task, date){
 }
 
 function addDescription(e){
+
+    let csrftoken = getCookie('csrftoken');
+
+
     let id_task = e.target.id.split('_')[1];
     let description = e.target.value;
 
     $.ajax({
-        url: 'api/v.1/addDescriptionTask?id=' + id_task + '&description=' + description,
-        method: 'get',
+        url: 'api/v.1/updateDescriptionTask/?id=' + id_task + '&description=' + description,
+        method: 'put',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
             CallToastPanel('Описание изменено!')
         },
@@ -202,6 +247,8 @@ function renamePanel(task){
 }
 
 function AjaxRenameTask(e){
+    let csrftoken = getCookie('csrftoken');
+
     let title = e.target.value;
 
     let id_task = e.target.id.split('_')[1];
@@ -211,8 +258,13 @@ function AjaxRenameTask(e){
     }
 
     $.ajax({
-        url: 'api/v.1/renameTask?id=' + id_task + '&title=' + title,
-        method: 'get',
+        url: 'api/v.1/renameTask/?id=' + id_task + '&title=' + title,
+        method: 'put',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
             CallToastPanel('Название изменено!')
         },
@@ -259,14 +311,21 @@ function CallToastPanel(message){
 
 function loadFlagsList(id_task){
 
+    let csrftoken = getCookie('csrftoken');
+
     let customFlagsList = document.getElementById('customFlagsList_' + id_task);
     if (customFlagsList.childElementCount != 0){
         return;
     }
-
+    
     $.ajax({
-        url: 'api/v.1/selectCustomFlags?id=' + id_task,
-        method: 'get',
+        url: 'api/v.1/customFlag/?id=' + id_task,
+        method: 'post',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
         success: function(data){
 
             if (data == null){
@@ -289,7 +348,7 @@ function loadFilesList(id_task){
         return;
     }
     $.ajax({
-        url: 'api/v.1/selectFiles?id_task=' + id_task,
+        url: 'api/v.1/FileTask/?id_task=' + id_task,
         method: 'get',
         success: function(data){
 
