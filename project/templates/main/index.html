@@ -2,8 +2,14 @@
 {% load static %}
 
 {% block content %}
-
 <link rel="stylesheet" href="{% static 'css/main/panel.css' %}">
+
+
+    
+
+    
+{% if user.is_authenticated %}
+
 
 <div class="container">
 
@@ -103,7 +109,24 @@
         </div>
     </div>
 
+
+
 </section>
+
+{% else %}
+    
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+
+        </div>
+        <div class="col-6">
+            <video src=""></video>
+        </div>
+    </div>
+</div>
+
+{% endif %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="{% static 'js/instruments/litepicker.js' %}"></script>
 <script src="{% static 'js/instruments/mobilefriendly.js' %}"></script>

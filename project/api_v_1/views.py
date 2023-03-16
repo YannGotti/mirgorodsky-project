@@ -285,7 +285,7 @@ class FileTask(APIView):
             filename = ''
             image = request.FILES['file']
 
-            valid_file = FilesTask.objects.filter(filename = image.name)
+            valid_file = FilesTask.objects.filter(filename = image.name, task = request.POST.get('id_task'))
             if (valid_file):
                 data = {
                     'error' : 'A file with the same name already exists',

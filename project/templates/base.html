@@ -36,7 +36,12 @@
                     <button type="button" class="btn btn-outline-light text-dark text-navbar-elements" id="navbarNavAltMarkup">API</button>
                 </div>
             </div>
-            
+
+            {% if not user.is_authenticated %}
+                <button type="button" class="btn btn-outline-light text-dark text-navbar-elements mx-2" id="navbarNavAltMarkup">Вход</button>
+                <button type="button" class="btn btn-outline-danger text-navbar-elements mx-2" id="navbarNavAltMarkup">Регистрация</button>
+            {% endif %}
+
         </div>
     </nav>
 

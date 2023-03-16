@@ -58,13 +58,16 @@ function addTask(){
         success: function(request){
             let task = request[0];
             createTaskDiv(task);
-            createOnePickerPanel(task);
+            
+
             form.elements.title.value = '';
 
             checkCountTasks();
             closePanelTask();
+            setTimeout(function(){createOnePickerPanel(task.pk)}, 1000);
 
             filterAjax('all', 'Все');
+
         },
         error: function (jqXHR, exception) {
             console.log(exception)

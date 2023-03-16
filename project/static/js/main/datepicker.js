@@ -1,4 +1,7 @@
 
+let PICKERS = []
+
+
 const picker = new Litepicker({ 
     element: document.getElementById('datePicker'),
     lang : 'ru',
@@ -6,11 +9,12 @@ const picker = new Litepicker({
     plugins: ['mobilefriendly']
   });
 
+PICKERS.push(picker);
+
 function createOnePickerPanel(task){
-  datepick = document.getElementById('datepick_' + task.pk);
+  let datepick = document.getElementById('datepick_' + task);
 
-
-  new Litepicker({ 
+  let picker = new Litepicker({ 
     element: datepick,
     lang : 'ru',
     minDate: new Date(),
@@ -19,7 +23,9 @@ function createOnePickerPanel(task){
     setup: (picker) => {
 
       picker.on('selected', (date1, date2) => {
+
         let id_task = datepick.id.split('_')[1];
+
 
         setTimeout(function(){
             let date = datepick.value;
@@ -30,12 +36,15 @@ function createOnePickerPanel(task){
       });
    },
   });
+
+  PICKERS.push(picker);
 }
 
 function createPickerPanel(){
   let datepicks = document.getElementsByClassName('datepicks');
   for (const datepick of datepicks) {
-    new Litepicker({ 
+
+    let picker = new Litepicker({ 
       element: datepick,
       lang : 'ru',
       minDate: new Date(),
@@ -44,6 +53,7 @@ function createPickerPanel(){
       setup: (picker) => {
 
         picker.on('selected', (date1, date2) => {
+
           let id_task = datepick.id.split('_')[1];
 
           setTimeout(function(){
@@ -54,6 +64,8 @@ function createPickerPanel(){
         });
      },
     });
+
+    PICKERS.push(picker);
   }
 }
 

@@ -48,11 +48,11 @@ function listCustomFlags(id_task){
     let flags = UpdateAllCustomFlags();
     setTimeout(function(){
         if (flags.length == 0){
-            list.style.display = 'none';
-            return;
+            list.classList.replace('show', 'hide')
         }
+        else {list.classList.replace('hide', 'show')}
         createListCustomFlags(flags , list, id_task);
-    }, 100);
+    }, 200);
     
     
 }
