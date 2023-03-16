@@ -36,12 +36,34 @@ function deleteCustomFlag(flagName, id_flag, id_task){
     });
 }
 
+function setValueInputCustomFlags(flag, input_id){
+    let input = document.getElementById('inputCustomFlag_' + input_id);
+    input.value = flag;
+    addCustomFlag(input_id);
+    return;
+}
+
+function listCustomFlags(id_task){
+    let list = document.getElementById('listCustomFlags_' + id_task);
+    let flags = UpdateAllCustomFlags();
+    setTimeout(function(){
+        if (flags.length == 0){
+            list.style.display = 'none';
+            return;
+        }
+        createListCustomFlags(flags , list, id_task);
+    }, 100);
+    
+    
+}
+
 function addCustomFlag(id_task){
 
     let csrftoken = getCookie('csrftoken');
 
     let inputCustomFlag = document.getElementById('inputCustomFlag_' + id_task);
     let flagName = inputCustomFlag.value;
+
 
     if (flagName == ''){
         CallToastPanel('Поле название категории не может быть пустым!');

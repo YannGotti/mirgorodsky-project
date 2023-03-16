@@ -47,7 +47,9 @@ function createTaskDiv(task){
                                         
                                     </div>
                                     <form onsubmit="addCustomFlag(` + task.pk + `); return false;">
-                                        <input class="form-control form-control-sm text-panel" id="inputCustomFlag_` + task.pk + `" type="text" placeholder="Категория..." aria-label=".form-control-sm example" >
+                                        <input onclick="listCustomFlags(` + task.pk + `);" class="form-control form-control-sm text-panel dropdown-toggle" id="inputCustomFlag_` + task.pk + `" type="text" data-bs-toggle="dropdown" placeholder="Категория..." aria-label=".form-control-sm example">
+                                        <ul class="dropdown-menu" style="width: 80%;" id="listCustomFlags_` + task.pk + `">
+                                        </ul>
                                     </form>
                                     
                                 </div>
@@ -204,6 +206,17 @@ function createFilterChoise(data){
     `
         <li><a class="dropdown-item  text-custom-filter" href="#" onclick="filterAjax('` + data.flagName + `', '` + data.flagName + `')">` + data.flagName + `</a></li>
     `
+}
+
+function createListCustomFlags(flags, list, id_task){
+    list.innerHTML = null;
+
+    for (const flag of flags) {
+        list.innerHTML += 
+        `
+            <li><button type="button" class="btn btn-outline-light text-dark text-panel" onclick="setValueInputCustomFlags('`+ flag +`', '`+ id_task +`')"  style="width: 100%;"> `+ flag +`</button></li>
+        `
+    }
 }
 
 function getRandomArbitrary(min, max) {

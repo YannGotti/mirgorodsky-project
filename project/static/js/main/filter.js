@@ -15,6 +15,25 @@ function getAllCustomFlags(){
     });
 }
 
+function UpdateAllCustomFlags(){
+    let flags = []
+    $.ajax({
+        url: 'api/v.1/selectAllTasks/customFlags/',
+        method: 'get',
+        success: function(data){
+
+            for (const filter of data) {
+                flags.push(filter.flagName);
+            }
+        },
+        error: function (jqXHR, exception) {
+            return;
+        }
+    });
+
+    return flags;
+}
+
 function getTaskCustomFlags(id_task){
     $.ajax({
         url: 'api/v.1/selectAllTasks/taskCustomFlags?id_task=' + id_task,
