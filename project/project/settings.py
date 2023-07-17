@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'server', 
         'USER': 'yann_gotti', 
         'PASSWORD': 'ry|zf~kFZxL9', 
-        'HOST': '10.0.2.5',
+        'HOST': '127.0.0.1',
         'PORT': '3306', 
         'OPTIONS': { 
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" 
